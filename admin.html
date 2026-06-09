@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Echelon — Waitlist CRM</title>
+<style>
+  :root {
+    --bg: #000000;
+    --panel: #0c0c0e;
+    --panel-2: #121214;
+    --text: #f5f5f7;
+    --dim: #86868b;
+    --mid: #b0b0b6;
+    --hair: rgba(255,255,255,0.10);
+    --hair-soft: rgba(255,255,255,0.06);
+    --violet: oklch(0.62 0.16 285);
+    --violet-soft: oklch(0.62 0.16 285 / 0.14);
+    --warn: oklch(0.65 0.2 25);
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body {
+    font-family: var(--font); color: var(--text);
+    -webkit-font-smoothing: antialiased; letter-spacing: -0.01em;
+    min-height: 100vh;
+  }
+  ::selection { background: rgba(255,255,255,0.18); }
+  a { color: inherit; text-decoration: none; }
+  button, input, select, textarea { font-family: var(--font); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 8px; border: 3px solid #000; }
+
+  .shell { max-width: 1200px; margin: 0 auto; padding: 26px 28px 80px; }
+
+  /* header */
+  header.top {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding-bottom: 22px; border-bottom: 1px solid var(--hair-soft); margin-bottom: 26px;
+  }
+  .brand { display: flex; align-items: center; gap: 11px; }
+  .brand .mark { width: 26px; height: 26px; display: block; }
+  .brand .name { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+  .brand .div { width: 1px; height: 20px; background: var(--hair); margin: 0 4px; }
+  .brand .sub { font-size: 13px; color: var(--dim); font-weight: 500; }
+  .top-actions { display: flex; align-items: center; gap: 10px; }
+  .who { font-size: 12px; color: var(--dim); margin-right: 4px; }
+  .who b { color: var(--mid); font-weight: 500; }
+
+  .btn {
+    font-size: 13px; font-weight: 500; padding: 9px 15px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--hair); background: transparent; color: var(--text);
+    display: inline-flex; align-items: center; gap: 7px; transition: all .18s ease; white-space: nowrap;
+  }
+  .btn:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+  .btn.primary { background: #fff; color: #000; border-color: #fff; }
+  .btn.primary:hover { opacity: 0.88; background: #fff; }
+  .btn.primary:disabled { opacity: 0.4; cursor: default; }
+  .btn.ghostlink { border: none; color: var(--mid); padding: 9px 8px; }
+  .btn.ghostlink:hover { color: var(--text); background: transparent; }
+  .btn svg { display: block; }
+
+  .badge {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 980px; border: 1px solid var(--hair);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .badge .d { width: 7px; height: 7px; border-radius: 50%; }
+  .badge.live .d { background: var(--violet); }
+  .badge.demo .d { background: #5a5a5f; }
+
+  /* stats */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .stat { background: var(--panel); border: 1px solid var(--hair-soft); border-radius: 12px; padding: 16px 16px 15px; }
+  .stat .n { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .stat .l { font-size: 12px; color: var(--dim); margin-top: 5px; }
+  .stat.total { background: linear-gradient(160deg, #151517, #0a0a0c); }
+  @media (max-width: 900px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* toolbar */
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .search { flex: 1; min-width: 200px; position: relative; display: flex; align-items: center; }
+  .search svg { position: absolute; left: 13px; pointer-events: none; }
+  .search input {
+    width: 100%; background: var(--panel); border: 1px solid var(--hair); border-radius: 9px;
+    padding: 11px 14px 11px 38px; color: var(--text); font-size: 14px; outline: none; transition: border-color .18s ease;
+  }
+  .search input::placeholder { color: var(--dim); }
+  .search input:focus { border-color: rgba(255,255,255,0.34); }
+  select.ctl {
+    background: var(--panel); border: 1px solid var(--hair); border-radius: 9px; color: var(--text);
+    padding: 11px 32px 11px 13px; font-size: 13px; outline: none; cursor: pointer;
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2386868b' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat: no-repeat; background-position: right 11px center;
+  }
+  select.ctl:focus { border-color: rgba(255,255,255,0.34); }
+
+  /* add panel */
+  .addpanel {
+    display: none; gap: 10px; margin-bottom: 16px; padding: 14px; background: var(--panel);
+    border: 1px solid var(--hair); border-radius: 12px; align-items: center;
+  }
+  .addpanel.open { display: flex; }
+  .addpanel input {
+    flex: 1; background: #000; border: 1px solid var(--hair); border-radius: 8px; padding: 10px 13px;
+    color: var(--text); font-size: 14px; outline: none;
+  }
+  .addpanel input:focus { border-color: rgba(255,255,255,0.34); }
+
+  /* table */
+  .tablewrap { background: var(--panel); border: 1px solid var(--hair-soft); border-radius: 14px; overflow: hidden; min-height: 120px; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--dim); padding: 14px 18px; border-bottom: 1px solid var(--hair-soft); white-space: nowrap;
+  }
+  tbody td { padding: 13px 18px; border-bottom: 1px solid var(--hair-soft); font-size: 14px; vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { transition: background .15s ease; }
+  tbody tr:hover { background: rgba(255,255,255,0.018); }
+  .col-num { width: 44px; color: var(--dim); font-variant-numeric: tabular-nums; font-size: 13px; }
+  .email { font-weight: 500; }
+  .email .src { display: block; font-size: 12px; color: var(--dim); font-weight: 400; margin-top: 2px; }
+  .when { color: var(--mid); white-space: nowrap; }
+  .when .abs { display: block; font-size: 12px; color: var(--dim); margin-top: 2px; }
+  .notes-input {
+    width: 100%; min-width: 140px; background: transparent; border: 1px solid transparent; border-radius: 7px;
+    padding: 7px 9px; color: var(--text); font-size: 13px; outline: none; transition: all .15s ease;
+  }
+  .notes-input::placeholder { color: var(--dim); }
+  .notes-input:hover { border-color: var(--hair-soft); }
+  .notes-input:focus { border-color: rgba(255,255,255,0.3); background: #000; }
+  .del {
+    width: 30px; height: 30px; border-radius: 7px; border: 1px solid transparent; background: transparent;
+    color: var(--dim); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all .15s ease;
+  }
+  .del:hover { color: #ff6b6b; border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.08); }
+
+  /* empty / states */
+  .empty { padding: 64px 24px; text-align: center; }
+  .empty .eicon { width: 52px; height: 52px; border-radius: 14px; background: var(--panel-2); border: 1px solid var(--hair-soft); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+  .empty h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .empty p { color: var(--dim); font-size: 14px; max-width: 440px; margin: 0 auto 22px; line-height: 1.55; }
+  .empty .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  .foot-note { margin-top: 18px; font-size: 12px; color: var(--dim); display: flex; align-items: center; gap: 8px; }
+  .foot-note .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--violet); box-shadow: 0 0 0 0 var(--violet-soft); animation: pulse 2.4s ease-out infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 oklch(0.62 0.16 285 / 0.5);} 70% { box-shadow: 0 0 0 8px oklch(0.62 0.16 285 / 0);} 100% { box-shadow: 0 0 0 0 oklch(0.62 0.16 285 / 0);} }
+
+  /* ---- auth / setup screens ---- */
+  .screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 28px; }
+  .authcard {
+    width: 100%; max-width: 420px; background: linear-gradient(165deg, #121216, #0a0a0c);
+    border: 1px solid var(--hair-soft); border-radius: 18px; padding: 34px 30px 30px;
+    box-shadow: 0 40px 100px -30px rgba(0,0,0,0.9);
+  }
+  .authcard.wide { max-width: 560px; }
+  .authcard .brand { margin-bottom: 22px; }
+  .authcard h2 { font-size: 21px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .authcard .lead { font-size: 14px; color: var(--dim); line-height: 1.55; margin-bottom: 22px; }
+  .field { margin-bottom: 13px; }
+  .field label { display: block; font-size: 12px; color: var(--dim); margin-bottom: 7px; }
+  .field input {
+    width: 100%; background: #000; border: 1px solid var(--hair); border-radius: 9px;
+    padding: 12px 14px; color: var(--text); font-size: 15px; outline: none; transition: border-color .18s ease;
+  }
+  .field input:focus { border-color: rgba(255,255,255,0.4); }
+  .auth-err { font-size: 13px; color: var(--warn); margin: 4px 0 14px; min-height: 18px; }
+  .authcard .full { width: 100%; justify-content: center; padding: 12px; font-size: 15px; }
+  .authcard .tiny { font-size: 12px; color: var(--dim); margin-top: 16px; text-align: center; line-height: 1.5; }
+  .codeblock {
+    background: #000; border: 1px solid var(--hair-soft); border-radius: 10px; padding: 14px 16px;
+    font-family: var(--mono); font-size: 12.5px; color: var(--mid); line-height: 1.7; margin: 6px 0 18px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .codeblock b { color: var(--text); font-weight: 600; }
+  .steps { list-style: none; counter-reset: s; margin: 0 0 20px; }
+  .steps li { counter-increment: s; position: relative; padding-left: 30px; margin-bottom: 12px; font-size: 14px; color: var(--mid); line-height: 1.5; }
+  .steps li::before {
+    content: counter(s); position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--panel-2); border: 1px solid var(--hair); color: var(--text); font-size: 11px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .steps li b { color: var(--text); font-weight: 600; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+  <!-- ============ SETUP (shown until Supabase keys are added) ============ -->
+  <div class="screen hidden" id="setupScreen">
+    <div class="authcard wide">
+      <div class="brand">
+        <svg class="mark" width="26" height="26" viewBox="0 0 32 32" fill="none"><rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="#0E0E0E" stroke="rgba(255,255,255,0.14)"/><g fill="#F0F0F0"><rect x="4.75" y="19.3" width="4.5" height="7.7" rx="1.2"/><rect x="13.75" y="12.7" width="4.5" height="14.3" rx="1.2"/><rect x="22.75" y="5" width="4.5" height="22" rx="1.2"/></g></svg>
+        <span class="name">echelon</span><span class="div"></span><span class="sub">Admin setup</span>
+      </div>
+      <h2>Connect your Supabase</h2>
+      <p class="lead">The CRM isn't connected yet. Add your project keys to go live, or explore it now in local demo mode.</p>
+      <ol class="steps">
+        <li>Run the provided SQL in Supabase → <b>SQL Editor</b> to create the <b>waitlist</b> table + policies.</li>
+        <li>Create an admin user in <b>Authentication → Users → Add user</b> (email + password).</li>
+        <li>Open <b>echelon-config.js</b> and paste your two values:</li>
+      </ol>
+      <div class="codeblock">window.ECHELON_SUPABASE = {
+  url:     <b>"https://xxxx.supabase.co"</b>,
+  anonKey: <b>"eyJhbGci…"</b>,
+};</div>
+      <div class="empty row" style="padding:0; justify-content:flex-start;">
+        <button class="btn primary" id="demoBtn">Continue in demo mode</button>
+        <a class="btn" href="index.html" target="_blank" rel="noopener">View landing ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ LOGIN ============ -->
+  <div class="screen hidden" id="loginScreen">
+    <div class="authcard">
+      <div class="brand">
+        <svg class="mark" width="26" height="26" viewBox="0 0 32 32" fill="none"><rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="#0E0E0E" stroke="rgba(255,255,255,0.14)"/><g fill="#F0F0F0"><rect x="4.75" y="19.3" width="4.5" height="7.7" rx="1.2"/><rect x="13.75" y="12.7" width="4.5" height="14.3" rx="1.2"/><rect x="22.75" y="5" width="4.5" height="22" rx="1.2"/></g></svg>
+        <span class="name">echelon</span><span class="div"></span><span class="sub">Admin</span>
+      </div>
+      <h2>Sign in</h2>
+      <p class="lead">Authorized admins only. Sign in to view the waitlist.</p>
+      <form id="loginForm">
+        <div class="field"><label for="liEmail">Email</label><input id="liEmail" type="email" autocomplete="username" placeholder="you@echelon.com" /></div>
+        <div class="field"><label for="liPass">Password</label><input id="liPass" type="password" autocomplete="current-password" placeholder="••••••••" /></div>
+        <div class="auth-err" id="loginErr"></div>
+        <button class="btn primary full" id="loginBtn" type="submit">Sign in</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ APP ============ -->
+  <div class="shell hidden" id="appScreen">
+    <header class="top">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 32 32" fill="none"><rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="#0E0E0E" stroke="rgba(255,255,255,0.14)"/><g fill="#F0F0F0"><rect x="4.75" y="19.3" width="4.5" height="7.7" rx="1.2"/><rect x="13.75" y="12.7" width="4.5" height="14.3" rx="1.2"/><rect x="22.75" y="5" width="4.5" height="22" rx="1.2"/></g></svg>
+        <span class="name">echelon</span><span class="div"></span><span class="sub">Waitlist CRM</span>
+        <span class="badge" id="modeBadge" style="margin-left:8px;"><span class="d"></span><span class="t">—</span></span>
+      </div>
+      <div class="top-actions">
+        <span class="who hidden" id="whoami"></span>
+        <a class="btn ghostlink" href="index.html" target="_blank" rel="noopener">View landing ↗</a>
+        <button class="btn" id="exportBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+          Export CSV
+        </button>
+        <button class="btn primary" id="addBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Add signup
+        </button>
+        <button class="btn hidden" id="logoutBtn">Sign out</button>
+      </div>
+    </header>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="toolbar">
+      <div class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#86868b" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+        <input id="search" type="text" placeholder="Search by email or notes…" />
+      </div>
+      <select class="ctl" id="sortBy">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="email">Email A–Z</option>
+      </select>
+      <button class="btn ghostlink hidden" id="clearBtn">Clear all</button>
+    </div>
+
+    <div class="addpanel" id="addPanel">
+      <input id="addEmail" type="email" placeholder="founder@startup.com" />
+      <button class="btn primary" id="addConfirm">Add to waitlist</button>
+      <button class="btn" id="addCancel">Cancel</button>
+    </div>
+
+    <div class="tablewrap" id="tablewrap"></div>
+
+    <div class="foot-note"><span class="pulse"></span> <span id="footText">Connected to the landing page waitlist form.</span></div>
+  </div>
+
+  <script src="echelon-config.js"></script>
+  <script>
+  (function () {
+    const CFG = window.ECHELON_SUPABASE || {};
+    const CONFIGURED = !!window.ECHELON_CONFIGURED;
+    const DEMO_KEY = 'echelon_waitlist_v1';
+    const SESSION_KEY = 'echelon_admin_session';
+
+    let mode = 'demo';            // 'demo' | 'live'
+    let session = null;           // { access_token, refresh_token, email }
+    let state = [];               // current rows in memory
+    const ui = { q: '', sort: 'newest' };
+    let pollTimer = null;
+
+    // ---------- elements ----------
+    const $ = (id) => document.getElementById(id);
+    const screens = { setup: $('setupScreen'), login: $('loginScreen'), app: $('appScreen') };
+    const els = { stats: $('stats'), table: $('tablewrap'), search: $('search'), sort: $('sortBy') };
+
+    function show(name) {
+      Object.entries(screens).forEach(([k, el]) => el.classList.toggle('hidden', k !== name));
+    }
+
+    // ===================================================================
+    //  Data adapters
+    // ===================================================================
+    function rowFromSupabase(r) {
+      return { id: r.id, email: r.email, notes: r.notes || '', source: r.source || 'Landing page', ts: Date.parse(r.created_at) };
+    }
+
+    const demo = {
+      load() { try { return JSON.parse(localStorage.getItem(DEMO_KEY)) || []; } catch (e) { return []; } },
+      _save(l) { localStorage.setItem(DEMO_KEY, JSON.stringify(l)); },
+      async list() { return this.load().slice(); },
+      async add(email) {
+        const l = this.load();
+        if (!l.some(s => s.email.toLowerCase() === email.toLowerCase()))
+          l.push({ id: 'w_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6), email, notes: '', ts: Date.now(), source: 'Manual' });
+        this._save(l);
+      },
+      async updateNotes(id, notes) { const l = this.load(); const it = l.find(s => s.id === id); if (it) { it.notes = notes; this._save(l); } },
+      async remove(id) { this._save(this.load().filter(s => s.id !== id)); },
+      async clear() { this._save([]); },
+    };
+
+    const live = {
+      base: () => CFG.url + '/rest/v1/waitlist',
+      headers(extra) {
+        return Object.assign({
+          'apikey': CFG.anonKey,
+          'Authorization': 'Bearer ' + (session ? session.access_token : CFG.anonKey),
+          'Content-Type': 'application/json',
+        }, extra || {});
+      },
+      async req(path, opts, retry) {
+        const res = await fetch(this.base() + (path || ''), Object.assign({}, opts, { headers: this.headers(opts && opts.headers) }));
+        if (res.status === 401 && retry !== false) {
+          const ok = await refreshSession();
+          if (ok) return this.req(path, opts, false);
+          throw new Error('AUTH');
+        }
+        return res;
+      },
+      async list() {
+        const res = await this.req('?select=*&order=created_at.desc', { method: 'GET' });
+        if (!res.ok) throw new Error('Could not load (' + res.status + ')');
+        return (await res.json()).map(rowFromSupabase);
+      },
+      async add(email) {
+        const res = await this.req('', { method: 'POST', headers: { 'Prefer': 'return=minimal' }, body: JSON.stringify([{ email, source: 'Manual' }]) });
+        if (!res.ok && res.status !== 409) throw new Error('Add failed (' + res.status + ')');
+      },
+      async updateNotes(id, notes) {
+        await this.req('?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers: { 'Prefer': 'return=minimal' }, body: JSON.stringify({ notes }) });
+      },
+      async remove(id) {
+        await this.req('?id=eq.' + encodeURIComponent(id), { method: 'DELETE', headers: { 'Prefer': 'return=minimal' } });
+      },
+    };
+
+    const A = () => (mode === 'live' ? live : demo);
+
+    // ===================================================================
+    //  Auth (Supabase)
+    // ===================================================================
+    function saveSession(s) { session = s; localStorage.setItem(SESSION_KEY, JSON.stringify(s)); }
+    function clearSession() { session = null; localStorage.removeItem(SESSION_KEY); }
+    function loadSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch (e) { return null; } }
+
+    async function login(email, password) {
+      const res = await fetch(CFG.url + '/auth/v1/token?grant_type=password', {
+        method: 'POST', headers: { 'apikey': CFG.anonKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error_description || data.msg || 'Invalid email or password');
+      saveSession({ access_token: data.access_token, refresh_token: data.refresh_token, email: (data.user && data.user.email) || email });
+    }
+
+    async function refreshSession() {
+      const s = session || loadSession();
+      if (!s || !s.refresh_token) return false;
+      try {
+        const res = await fetch(CFG.url + '/auth/v1/token?grant_type=refresh_token', {
+          method: 'POST', headers: { 'apikey': CFG.anonKey, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refresh_token: s.refresh_token }),
+        });
+        if (!res.ok) return false;
+        const data = await res.json();
+        saveSession({ access_token: data.access_token, refresh_token: data.refresh_token, email: s.email });
+        return true;
+      } catch (e) { return false; }
+    }
+
+    function logout() {
+      clearSession();
+      if (pollTimer) clearInterval(pollTimer);
+      show('login');
+    }
+
+    // ===================================================================
+    //  Rendering
+    // ===================================================================
+    function relTime(ts) {
+      const s = Math.floor((Date.now() - ts) / 1000);
+      if (s < 60) return 'just now';
+      const m = Math.floor(s/60); if (m < 60) return m + 'm ago';
+      const h = Math.floor(m/60); if (h < 24) return h + 'h ago';
+      const d = Math.floor(h/24); if (d < 7) return d + 'd ago';
+      const w = Math.floor(d/7); if (w < 5) return w + 'w ago';
+      return Math.floor(d/30) + 'mo ago';
+    }
+    function absDate(ts) { return new Date(ts).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }); }
+    function esc(s) { return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+    function renderStats() {
+      const now = Date.now(), day = now-864e5, week = now-7*864e5, month = now-30*864e5;
+      const cards = [
+        { n: state.length, l: 'Total signups', cls: 'total' },
+        { n: state.filter(s => s.ts >= day).length, l: 'Today' },
+        { n: state.filter(s => s.ts >= week).length, l: 'This week' },
+        { n: state.filter(s => s.ts >= month).length, l: 'This month' },
+      ];
+      els.stats.innerHTML = cards.map(c => `<div class="stat ${c.cls||''}"><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+    }
+
+    function applyView() {
+      let out = state.slice();
+      if (ui.q) { const q = ui.q.toLowerCase(); out = out.filter(s => s.email.toLowerCase().includes(q) || (s.notes||'').toLowerCase().includes(q)); }
+      if (ui.sort === 'newest') out.sort((a,b) => b.ts - a.ts);
+      else if (ui.sort === 'oldest') out.sort((a,b) => a.ts - b.ts);
+      else out.sort((a,b) => a.email.localeCompare(b.email));
+      return out;
+    }
+
+    function renderTable() {
+      if (state.length === 0) {
+        els.table.innerHTML = `
+          <div class="empty">
+            <span class="eicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#86868b" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>
+            <h3>No signups yet</h3>
+            <p>${mode === 'live'
+              ? 'When someone joins the waitlist on your landing page, they\'ll appear here automatically.'
+              : 'This board is connected to the waitlist form on your landing page. Submit an email there, or seed a few to explore.'}</p>
+            <div class="row">
+              ${mode === 'demo' ? '<button class="btn primary" id="seedBtn">Add sample data</button>' : ''}
+              <a class="btn" href="index.html" target="_blank" rel="noopener">Open landing page ↗</a>
+            </div>
+          </div>`;
+        const sb = $('seedBtn'); if (sb) sb.onclick = seedSamples;
+        return;
+      }
+      const view = applyView();
+      if (view.length === 0) { els.table.innerHTML = `<div class="empty"><h3>No matches</h3><p>No signups match your search.</p></div>`; return; }
+      els.table.innerHTML = `
+        <table>
+          <thead><tr><th class="col-num">#</th><th>Email</th><th>Signed up</th><th>Notes</th><th></th></tr></thead>
+          <tbody>
+            ${view.map((s, i) => `
+              <tr data-id="${esc(String(s.id))}">
+                <td class="col-num">${String(i+1).padStart(2,'0')}</td>
+                <td><span class="email">${esc(s.email)}<span class="src">${esc(s.source)}</span></span></td>
+                <td class="when">${relTime(s.ts)}<span class="abs">${absDate(s.ts)}</span></td>
+                <td><input class="notes-input" data-id="${esc(String(s.id))}" value="${esc(s.notes)}" placeholder="Add a note…" /></td>
+                <td><button class="del" data-id="${esc(String(s.id))}" title="Delete">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2M6 7l1 13a1 1 0 001 1h8a1 1 0 001-1l1-13"/></svg>
+                </button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>`;
+    }
+
+    function renderAll() { renderStats(); renderTable(); }
+
+    async function refresh() {
+      try {
+        state = await A().list();
+        renderAll();
+      } catch (e) {
+        if (String(e.message).includes('AUTH')) { logout(); return; }
+        els.table.innerHTML = `<div class="empty"><h3>Couldn’t load signups</h3><p>${esc(e.message)}</p><div class="row"><button class="btn" id="retryBtn">Retry</button></div></div>`;
+        const rb = $('retryBtn'); if (rb) rb.onclick = refresh;
+      }
+    }
+
+    // ===================================================================
+    //  Wire up app
+    // ===================================================================
+    // notes: update local state on input (keep focus), persist on change/blur
+    els.table.addEventListener('input', (e) => {
+      const inp = e.target.closest('.notes-input'); if (!inp) return;
+      const it = state.find(s => String(s.id) === inp.dataset.id); if (it) it.notes = inp.value;
+    });
+    els.table.addEventListener('change', async (e) => {
+      const inp = e.target.closest('.notes-input'); if (!inp) return;
+      try { await A().updateNotes(inp.dataset.id, inp.value); } catch (err) {}
+    });
+    els.table.addEventListener('click', async (e) => {
+      const del = e.target.closest('.del'); if (!del) return;
+      const id = del.dataset.id;
+      state = state.filter(s => String(s.id) !== id); renderAll();
+      try { await A().remove(id); } catch (err) { refresh(); }
+    });
+
+    els.search.addEventListener('input', (e) => { ui.q = e.target.value; renderTable(); });
+    els.sort.addEventListener('change', (e) => { ui.sort = e.target.value; renderTable(); });
+
+    const addPanel = $('addPanel'), addEmail = $('addEmail');
+    $('addBtn').onclick = () => { addPanel.classList.add('open'); addEmail.focus(); };
+    $('addCancel').onclick = () => { addPanel.classList.remove('open'); addEmail.value = ''; };
+    async function doAdd() {
+      const email = addEmail.value.trim();
+      if (!/.+@.+\..+/.test(email)) { addEmail.style.borderColor = 'var(--warn)'; return; }
+      addEmail.value = ''; addEmail.style.borderColor = ''; addPanel.classList.remove('open');
+      try { await A().add(email); } catch (err) {}
+      refresh();
+    }
+    $('addConfirm').onclick = doAdd;
+    addEmail.addEventListener('keydown', (e) => { if (e.key === 'Enter') doAdd(); });
+
+    $('clearBtn').onclick = async () => {
+      if (state.length === 0) return;
+      if (confirm('Remove all signups? This cannot be undone.')) { await A().clear(); refresh(); }
+    };
+
+    $('exportBtn').onclick = () => {
+      const view = applyView(); if (!view.length) return;
+      const rows = [['Email','Source','Signed up','Notes']];
+      view.forEach(s => rows.push([s.email, s.source, new Date(s.ts).toISOString(), (s.notes||'').replace(/\n/g,' ')]));
+      const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g,'""') + '"').join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'echelon-waitlist-' + new Date().toISOString().slice(0,10) + '.csv';
+      a.click(); URL.revokeObjectURL(a.href);
+    };
+
+    $('logoutBtn').onclick = logout;
+
+    function seedSamples() {
+      const now = Date.now(), H = 36e5, D = 24*H;
+      const samples = [
+        { email: 'maya@lumenhealth.io', notes: 'Founder fit is strong.', ts: now-1*H, source: 'Landing page' },
+        { email: 'daniel@paystream.co', notes: '', ts: now-5*H, source: 'Landing page' },
+        { email: 'sofia@coastal.app', notes: 'Warm intro via Maya.', ts: now-9*H, source: 'Landing page' },
+        { email: 'noah@forge.ai', notes: '', ts: now-26*H, source: 'Landing page' },
+        { email: 'kai@orbitlabs.dev', notes: '', ts: now-2*D, source: 'Landing page' },
+        { email: 'elena@vela.studio', notes: '', ts: now-3*D, source: 'Manual' },
+        { email: 'dev@nimbus.io', notes: 'Revisit in Q3.', ts: now-6*D, source: 'Landing page' },
+        { email: 'zara@mirage.xyz', notes: '', ts: now-9*D, source: 'Landing page' },
+      ];
+      const l = demo.load();
+      samples.forEach(s => { if (!l.some(x => x.email.toLowerCase() === s.email.toLowerCase())) l.push(Object.assign({ id: 'w_' + Math.random().toString(36).slice(2,10) }, s)); });
+      demo._save(l); refresh();
+    }
+
+    // demo cross-tab live update
+    window.addEventListener('storage', (e) => { if (mode === 'demo' && e.key === DEMO_KEY) refresh(); });
+
+    function enterApp() {
+      const badge = $('modeBadge');
+      if (mode === 'live') {
+        badge.className = 'badge live'; badge.querySelector('.t').textContent = 'Live';
+        $('footText').textContent = 'Live — connected to your Supabase. New signups appear automatically.';
+        $('logoutBtn').classList.remove('hidden');
+        $('clearBtn').classList.add('hidden');
+        if (session && session.email) { const w = $('whoami'); w.innerHTML = 'Signed in as <b>' + esc(session.email) + '</b>'; w.classList.remove('hidden'); }
+        if (pollTimer) clearInterval(pollTimer);
+        pollTimer = setInterval(refresh, 20000);
+      } else {
+        badge.className = 'badge demo'; badge.querySelector('.t').textContent = 'Demo';
+        $('footText').textContent = 'Demo mode — data is stored locally in this browser. Add Supabase keys to go live.';
+        $('clearBtn').classList.remove('hidden');
+      }
+      show('app');
+      refresh();
+    }
+
+    // ---------- login screen ----------
+    $('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = $('loginBtn'), err = $('loginErr');
+      err.textContent = '';
+      btn.disabled = true; btn.textContent = 'Signing in…';
+      try {
+        await login($('liEmail').value.trim(), $('liPass').value);
+        mode = 'live'; enterApp();
+      } catch (ex) {
+        err.textContent = ex.message;
+      } finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+    });
+
+    $('demoBtn').onclick = () => { mode = 'demo'; enterApp(); };
+
+    // ===================================================================
+    //  Boot
+    // ===================================================================
+    (async function boot() {
+      if (!CONFIGURED) { show('setup'); return; }
+      session = loadSession();
+      if (session && session.access_token) {
+        mode = 'live';
+        // validate the stored session with a quick load; fall back to login
+        try { state = await live.list(); enterApp(); }
+        catch (e) {
+          const ok = await refreshSession();
+          if (ok) { try { state = await live.list(); enterApp(); return; } catch (e2) {} }
+          show('login');
+        }
+      } else {
+        show('login');
+      }
+    })();
+  })();
+  </script>
+</body>
+</html>
