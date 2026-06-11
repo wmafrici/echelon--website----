@@ -345,8 +345,8 @@
   .index-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 30px; margin-bottom: 40px; flex-wrap: wrap; }
   .index-head h2 { font-size: clamp(30px, 4.6vw, 56px); font-weight: 600; line-height: 1.02; letter-spacing: -0.032em; }
   .index-head .sub { margin-top: 16px; font-size: 18px; color: var(--text-mid); max-width: 44ch; }
-  .live { display: inline-flex; align-items: center; gap: 9px; flex: 0 0 auto; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; color: var(--text-mid); padding: 8px 14px; border: 1px solid var(--hair); border-radius: 980px; background: rgba(255,255,255,0.02); margin-top: 8px; }
-  .live .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--violet); box-shadow: 0 0 8px var(--violet); }
+  .index-head .index-note { margin-top: 14px; font-size: 14px; line-height: 1.55; color: var(--text-dim); max-width: 50ch; }
+  .cohort { display: inline-flex; align-items: center; gap: 9px; flex: 0 0 auto; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-mid); padding: 8px 14px; border: 1px solid var(--violet-soft); border-radius: 980px; background: oklch(0.66 0.15 248 / 0.05); margin-top: 8px; }
   .board { border: 1px solid var(--hair-soft); border-radius: 18px; overflow: hidden; background: linear-gradient(165deg, #111113 0%, #08080a 100%); }
   .lrow {
     display: grid; grid-template-columns: 60px 1fr auto; align-items: center; gap: 22px; padding: 20px 28px;
@@ -367,20 +367,17 @@
   .lrow .loc { font-size: 13px; color: var(--text-dim); }
   .lrow .meta .sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.2); }
   .lrow .venture { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
-  .lrow .score-wrap { text-align: right; min-width: 132px; }
-  .lrow .score { font-family: var(--mono); font-size: 20px; font-weight: 500; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; transition: color .4s ease; }
-  .lrow.flash .score { color: oklch(0.74 0.14 248); }
-  .lrow .track { margin-top: 9px; height: 3px; border-radius: 3px; width: 132px; margin-left: auto; background: rgba(255,255,255,0.08); overflow: hidden; }
-  .lrow .fill { height: 100%; width: 0%; border-radius: 3px; background: linear-gradient(90deg, oklch(0.48 0.12 256), oklch(0.72 0.14 248)); transition: width 1.1s cubic-bezier(.22,.84,.4,1); }
+  .lrow .selmark { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
+  .lrow .selmark .sm-mark { width: 13px; height: 13px; flex: 0 0 auto; opacity: 0.85; }
+  @media (max-width: 680px) { .lrow .selmark .sm-label { display: none; } }
   @media (max-width: 680px) {
     .lrow { grid-template-columns: 40px 1fr auto; gap: 14px; padding: 16px 18px; }
     .lrow .rank { font-size: 20px; }
     .lrow .venture { display: none; }
-    .lrow .score-wrap { min-width: 90px; }
-    .lrow .track { width: 90px; }
   }
   .index-foot { margin-top: 34px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
   .index-foot .ask { font-size: 18px; color: var(--text-mid); letter-spacing: -0.01em; }
+  .index-foot .index-demo { flex: 1 1 100%; font-size: 12px; color: var(--text-dim); letter-spacing: 0.01em; opacity: 0.7; }
 
   /* ---------- MEMBERSHIP ---------- */
   .membership { padding: 120px 0 40px; }
@@ -515,8 +512,6 @@
     .reveal { opacity: 1; transform: none; transition: none; }
   }
 </style>
-
-  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -549,21 +544,21 @@
         <span class="eyebrow"><span class="ping"></span> Coming soon · Join the waitlist</span>
         <h1 class="hero-title">Find your people.<br />Centralise your ventures.<br /><span class="soft">Build a legacy.</span></h1>
         <div class="hero-lead">
-          <p class="hero-sub">The centralised platform where the next generation of founders find co-founders, track what they're building, and run it all from one place.</p>
+          <p class="hero-sub">The platform where founders already building something real find the right people, track their ventures, and run it all from one place.</p>
           <div class="hero-actions">
             <div class="pair">
               <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
               <a class="btn btn-ghost" href="#platform">Explore the platform <span class="chev">›</span></a>
             </div>
-            <span class="note">First 15 founders get a month free · No card required</span>
+            <span class="note">First month free · No card required</span>
           </div>
         </div>
 
         <div class="strip">
           <div class="s">Status<b>Coming soon</b></div>
           <div class="s">The platform<b>Five tools, one place</b></div>
-          <div class="s">Built for<b>The new gen of founders</b></div>
-          <div class="s">Early offer<b>First 15 free for a month</b></div>
+          <div class="s">Built for<b>Founders already building</b></div>
+          <div class="s">Founding member offer<b>First cohort free for a month</b></div>
         </div>
 
         <div class="showcase" id="showcase">
@@ -597,17 +592,10 @@
                     <div class="wv">3</div>
                     <div class="wsub">$14,200 total value</div>
                   </div>
-                  <div class="ws-stat ring-card">
-                    <div>
-                      <div class="wl">Echelon Score</div>
-                      <div class="wv">87.4</div>
-                    </div>
-                    <div class="ws-ring">
-                      <svg width="46" height="46" viewBox="0 0 46 46">
-                        <circle class="rtrack" cx="23" cy="23" r="20" fill="none" stroke-width="3"></circle>
-                        <circle class="rfill" cx="23" cy="23" r="20" fill="none" stroke-width="3" data-pct="0.874"></circle>
-                      </svg>
-                    </div>
+                  <div class="ws-stat">
+                    <div class="wl">Index status</div>
+                    <div class="wv">Featured <span class="trend">✓</span></div>
+                    <div class="wsub">on the Echelon Index</div>
                   </div>
                   <div class="ws-stat">
                     <div class="wl">New matches</div>
@@ -632,7 +620,7 @@
                     <div class="wch">Activity</div>
                     <div class="ws-feed">
                       <div class="fi"><span class="fdot"></span><div><div class="ft">New co-founder match — Maya T. from London</div><div class="ftime">2m ago</div></div></div>
-                      <div class="fi"><span class="fdot"></span><div><div class="ft">Board application received — UI Designer role</div><div class="ftime">1h ago</div></div></div>
+                      <div class="fi"><span class="fdot"></span><div><div class="ft">Co-founder message received — Alex M.</div><div class="ftime">1h ago</div></div></div>
                       <div class="fi"><span class="fdot"></span><div><div class="ft">Project milestone due — Echelon Build — today</div><div class="ftime">Today</div></div></div>
                     </div>
                   </div>
@@ -733,10 +721,6 @@
             <div class="featcard" data-desc="<b>Matching</b> — Curated co-founder introductions scored on real fit, not luck.">
               <span class="fci"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M15 19a4.5 4.5 0 0 1 6 0"/></svg></span>
               <span class="fcl">Matching</span>
-            </div>
-            <div class="featcard" data-desc="<b>The Board</b> — Post roles and review applications to build out your team.">
-              <span class="fci"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 11h16"/></svg></span>
-              <span class="fcl">The Board</span>
             </div>
             <div class="featcard" data-desc="<b>Projects</b> — Track milestones and roadmaps across every venture in one view.">
               <span class="fci"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="2"/></svg></span>
@@ -904,13 +888,14 @@
     <!-- ECHELON INDEX -->
     <section class="index" id="index" data-screen-label="The Echelon Index">
       <div class="wrap">
-        <div class="ledger reveal"><span class="lx">[ 02 ]</span><span class="lt">The Index</span><span class="lrule"></span><span class="lc">Ranked · Verified · Live</span></div>
+        <div class="ledger reveal"><span class="lx">[ 02 ]</span><span class="lt">The Index</span><span class="lrule"></span><span class="lc">Curated · Verified · Selected</span></div>
         <div class="index-head">
           <div>
             <h2 class="reveal">The Echelon Index.</h2>
-            <div class="sub reveal">The top young entrepreneurs, ranked and verified in real time.</div>
+            <div class="sub reveal">The founders Echelon has chosen to recognise. Selected — not ranked. Earned — not applied for.</div>
+            <div class="index-note reveal">Echelon selects a small number of exceptional founders to feature on the Index. There's no algorithm. No application. We find you.</div>
           </div>
-          <div class="live reveal" id="liveBadge"><span class="live-dot"></span> LIVE</div>
+          <div class="cohort reveal">Founding Cohort</div>
         </div>
 
         <div class="board" id="board">
@@ -918,8 +903,9 @@
         </div>
 
         <div class="index-foot reveal">
-          <span class="ask">Where do you rank?</span>
-          <a class="btn btn-ghost" href="#waitlist">Join the waitlist <span class="chev">›</span></a>
+          <span class="ask">Think you belong on the Index?</span>
+          <a class="btn btn-ghost" href="#waitlist">Join the waitlist — we're watching <span class="chev">›</span></a>
+          <span class="index-demo">Illustrative data — names shown are for preview only.</span>
         </div>
       </div>
     </section>
@@ -931,14 +917,14 @@
         <div class="membership-grid">
           <div class="reveal">
             <h2>Built for the serious few.</h2>
-            <p>Echelon isn't for everyone. It's for the new generation of entrepreneurs who are already building something real — and want the tools, people, and standard to match their ambition.</p>
+            <p>Echelon isn't for everyone. It's for founders who are already building something real — and want the tools, the people, and the standard to match.</p>
             <div style="margin-top:34px;">
               <a class="btn btn-primary" href="#waitlist">Apply for membership</a>
             </div>
           </div>
           <div class="criteria reveal">
             <div class="ci"><span class="cn">01</span><div class="ct"><b>You're already building.</b><span>Shipping, not just planning — an idea in motion.</span></div></div>
-            <div class="ci"><span class="cn">02</span><div class="ct"><b>You're new generation.</b><span>Building with ambition and tools the last one never had.</span></div></div>
+            <div class="ci"><span class="cn">02</span><div class="ct"><b>You're ambitious.</b><span>Building with the tools and standard the last generation never had.</span></div></div>
             <div class="ci"><span class="cn">03</span><div class="ct"><b>You want a standard.</b><span>Surrounded by founders who raise your game.</span></div></div>
           </div>
         </div>
@@ -956,7 +942,7 @@
 
         <div class="offer reveal">
           <span class="badge">Launch offer</span>
-          <span class="otext">The <b>first 15 founders</b> off the waitlist get their first month <b>completely free</b> — full platform access, no card required.</span>
+          <span class="otext">The <b>founding member offer</b> — your first month <b>completely free</b> while we onboard our first cohort. Full platform access, no card required.</span>
           <span class="ocount"><span class="live-dot"></span> Limited spots</span>
         </div>
 
@@ -990,7 +976,7 @@
               <div class="f"><span class="ck">✓</span> Community access</div>
             </div>
             <div class="tcta"><a class="btn btn-ghost" href="#waitlist">Join the waitlist</a></div>
-            <div class="tnote">First month free for the first 15 founders</div>
+            <div class="tnote">Founding member offer — first month free while we onboard our first cohort</div>
           </article>
 
           <article class="tier featured reveal">
@@ -1000,17 +986,16 @@
             <div class="tdesc">The complete platform — everything, unlocked.</div>
             <div class="tfeat">
               <div class="f"><span class="ck">✓</span> Founder profile on the network</div>
-              <div class="f"><span class="ck">✓</span> <b>Verified</b> Echelon Score &amp; ranking</div>
+              <div class="f"><span class="ck">✓</span> <b>Verified</b> Echelon profile &amp; Index eligibility</div>
               <div class="f"><span class="ck">✓</span> <b>Priority</b> co-founder matching</div>
               <div class="f"><span class="ck">✓</span> Unlimited messaging</div>
               <div class="f"><span class="ck">✓</span> Unlimited project tracking &amp; roadmaps</div>
               <div class="f"><span class="ck">✓</span> Revenue dashboards &amp; metrics</div>
               <div class="f"><span class="ck">✓</span> <b>Full</b> relationship CRM — unlimited contacts</div>
-              <div class="f"><span class="ck">✓</span> Investor introductions</div>
               <div class="f"><span class="ck">✓</span> Priority support</div>
             </div>
             <div class="tcta"><a class="btn btn-primary" href="#waitlist">Join the waitlist</a></div>
-            <div class="tnote">Everything in Builder, fully unlocked</div>
+            <div class="tnote">Everything, fully unlocked</div>
           </article>
 
           <article class="tier reveal">
@@ -1042,10 +1027,6 @@
             <p>Running an accelerator, program, or organisation backing founders? Reach out and we'll tailor Echelon to your cohort.</p>
           </div>
           <div class="contact-methods">
-            <a class="cmethod" href="tel:0493668661">
-              <span class="cicon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
-              <span class="cinfo"><span class="clabel">Phone</span><span class="cval">0493 668 661</span></span>
-            </a>
             <a class="cmethod" href="mailto:wmafrici.work@gmail.com">
               <span class="cicon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
               <span class="cinfo"><span class="clabel">Email</span><span class="cval">wmafrici.work@gmail.com</span></span>
@@ -1063,7 +1044,7 @@
           <div class="cta-inner">
             <div>
               <h2>Be first through the door.</h2>
-              <p class="sub">Echelon is coming soon. Join the waitlist — the first 15 founders get their first month free.</p>
+              <p class="sub">Echelon is coming soon. Join the waitlist — our founding cohort gets their first month free.</p>
             </div>
             <form class="waitlist" id="wlform" novalidate>
               <div class="field">
@@ -1082,7 +1063,7 @@
       <div class="wrap">
         <div class="col" style="gap:14px; max-width:260px;">
           <div class="foot-brand"><span class="mark" aria-hidden="true" style="width:16px;height:16px;display:inline-flex;flex:0 0 auto;"><svg viewBox="0 0 32 32" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="echsqB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#18181c"/><stop offset="1" stop-color="#0a0a0c"/></linearGradient></defs><rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="url(#echsqB)" stroke="rgba(255,255,255,0.12)"/><g fill="#FFFFFF"><rect x="4.75" y="19.3" width="4.5" height="7.7" rx="1.2"/><rect x="13.75" y="12.7" width="4.5" height="14.3" rx="1.2"/><rect x="22.75" y="5" width="4.5" height="22" rx="1.2"/></g></svg></span>echelon</div>
-          <div style="line-height:1.5;">The centralised platform for the next generation of founders.</div>
+          <div style="line-height:1.5;">The centralised platform for founders building something real.</div>
         </div>
         <div class="foot-cols">
           <div class="foot-col">
@@ -1111,7 +1092,7 @@
       <div class="wrap">
         <div class="foot-bottom">
           <span>© 2026 Echelon. All rights reserved.</span>
-          <span>For the new generation of entrepreneurs.</span>
+          <span>For founders building something real.</span>
         </div>
       </div>
     </footer>
@@ -1323,17 +1304,19 @@
 
     // ---------- Echelon Index ----------
     const indexData = [
-      { name: 'Sofia Reyes',     loc: 'San Francisco, US', venture: 'Lumen Health',  score: 96.4 },
-      { name: 'Kai Nakamura',    loc: 'Tokyo, JP',         venture: 'Orbit Labs',    score: 95.1 },
-      { name: 'Amara Okafor',    loc: 'Lagos, NG',         venture: 'Paystream',     score: 93.8 },
-      { name: 'Noah Bennett',    loc: 'Melbourne, AU',     venture: 'Forge AI',      score: 92.6 },
-      { name: 'Elena Vasquez',   loc: 'Barcelona, ES',     venture: 'Coastal',       score: 91.3 },
-      { name: 'Dev Patel',       loc: 'Bengaluru, IN',     venture: 'Nimbus',        score: 90.0 },
-      { name: 'Mia Laurent',     loc: 'Paris, FR',         venture: 'Atelier',       score: 88.7 },
-      { name: 'Lucas Andersen',  loc: 'Copenhagen, DK',    venture: 'Vela',          score: 87.4 },
-      { name: 'Zara Khan',       loc: 'Dubai, AE',         venture: 'Mirage',        score: 86.2 },
-      { name: 'Oliver Grant',    loc: 'London, UK',        venture: 'Tempo',         score: 85.0 },
+      { name: 'Sofia Reyes',     loc: 'San Francisco, US', venture: 'Lumen Health' },
+      { name: 'Kai Nakamura',    loc: 'Tokyo, JP',         venture: 'Orbit Labs' },
+      { name: 'Amara Okafor',    loc: 'Lagos, NG',         venture: 'Paystream' },
+      { name: 'Noah Bennett',    loc: 'Melbourne, AU',     venture: 'Forge AI' },
+      { name: 'Elena Vasquez',   loc: 'Barcelona, ES',     venture: 'Coastal' },
+      { name: 'Dev Patel',       loc: 'Bengaluru, IN',     venture: 'Nimbus' },
+      { name: 'Mia Laurent',     loc: 'Paris, FR',         venture: 'Atelier' },
+      { name: 'Lucas Andersen',  loc: 'Copenhagen, DK',    venture: 'Vela' },
+      { name: 'Zara Khan',       loc: 'Dubai, AE',         venture: 'Mirage' },
+      { name: 'Oliver Grant',    loc: 'London, UK',        venture: 'Tempo' },
     ];
+
+    const SEL_MARK = '<svg class="sm-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="7.5" fill="#0E0E0E"/><g fill="' + "currentColor" + '"><rect x="6" y="19" width="4" height="7" rx="1"/><rect x="14" y="13" width="4" height="13" rx="1"/><rect x="22" y="6" width="4" height="20" rx="1"/></g></svg>';
 
     const board = document.getElementById('board');
     const rowEls = indexData.map((d, i) => {
@@ -1348,41 +1331,19 @@
           '<div class="meta"><span class="loc">' + d.loc + '</span>' +
           '<span class="sep"></span><span class="venture">' + d.venture + '</span></div>' +
         '</div>' +
-        '<div class="score-wrap">' +
-          '<div class="score" data-score="' + d.score.toFixed(1) + '">' + d.score.toFixed(1) + '</div>' +
-          '<div class="track"><div class="fill"></div></div>' +
-        '</div>';
+        '<div class="selmark" title="Selected by Echelon">' + SEL_MARK +
+          '<span class="sm-label">Selected by Echelon</span></div>';
       board.appendChild(row);
-      row._score = d.score;
       return row;
     });
-
-    function fillRow(row) {
-      const fill = row.querySelector('.fill');
-      const pct = Math.max(6, Math.min(100, (row._score - 80) / 20 * 100));
-      fill.style.width = pct.toFixed(1) + '%';
-    }
 
     let indexStarted = false;
     function startIndex() {
       if (indexStarted) return;
       indexStarted = true;
       rowEls.forEach((row, i) => {
-        setTimeout(() => { row.classList.add('in'); fillRow(row); }, 240 + i * 80);
+        setTimeout(() => { row.classList.add('in'); }, 240 + i * 80);
       });
-      if (!reduce) setTimeout(runLive, 1800 + rowEls.length * 80);
-    }
-
-    function runLive() {
-      const tick = () => {
-        const row = rowEls[Math.floor(Math.random() * rowEls.length)];
-        row._score = Math.min(99.9, row._score + 0.1);
-        row.querySelector('.score').textContent = row._score.toFixed(1);
-        fillRow(row);
-        row.classList.add('flash');
-        setTimeout(() => row.classList.remove('flash'), 1400);
-      };
-      setInterval(tick, 4000);
     }
 
     if (!reduce && 'IntersectionObserver' in window) {
@@ -1391,7 +1352,7 @@
       }, { threshold: 0.18 });
       iio.observe(document.getElementById('board'));
     } else {
-      rowEls.forEach((row) => { row.classList.add('in'); fillRow(row); });
+      rowEls.forEach((row) => { row.classList.add('in'); });
     }
 
     // ---------- Waitlist — Supabase (when configured) + local fallback ----------
