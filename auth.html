@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Echelon — Sign in or create account</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0"></script>
+<style>
+  :root {
+    --bg-dark: #09090b;
+    --bg-panel: #18181c;
+    --bg-input: #27272b;
+    --border: #3f3f46;
+    --text: #fafafa;
+    --text-dim: #a1a1a6;
+    --text-muted: #71717a;
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: var(--font); background: var(--bg-dark); color: var(--text);
+    line-height: 1.4; letter-spacing: -0.01em; min-height: 100vh;
+  }
+  ::selection { background: var(--accent) / 0.3; }
+  a { color: inherit; text-decoration: none; }
+
+  .container {
+    display: flex; min-height: 100vh;
+  }
+
+  .left-panel {
+    flex: 1; background: var(--bg-dark); padding: 48px; display: flex;
+    flex-direction: column; justify-content: space-between;
+  }
+
+  .right-panel {
+    flex: 1; background: var(--bg-panel); padding: 48px; display: flex;
+    align-items: center; justify-content: center;
+  }
+
+  /* LEFT PANEL */
+  .logo-block {
+    display: flex; align-items: center; gap: 10px; font-size: 18px;
+    font-weight: 600; letter-spacing: -0.02em; color: var(--text);
+  }
+
+  .logo-block svg {
+    width: 20px; height: 20px; display: block;
+  }
+
+  .back-link {
+    font-size: 12px; color: var(--text-muted);
+    transition: color .2s ease; margin-top: 10px; display: inline-flex;
+    align-items: center; gap: 6px;
+  }
+
+  .back-link:hover { color: var(--text-dim); }
+
+  .value-prop {
+    display: flex; flex-direction: column;
+  }
+
+  .value-prop h1 {
+    font-size: clamp(32px, 4vw, 48px); font-weight: 700; line-height: 1.1;
+    letter-spacing: -0.03em; color: var(--text);
+  }
+
+  .value-prop p {
+    font-size: 16px; color: var(--text-dim); margin-top: 14px; max-width: 380px;
+    line-height: 1.55;
+  }
+
+  .trust-points {
+    display: flex; flex-direction: column; gap: 12px; margin-top: 28px;
+  }
+
+  .trust-point {
+    display: flex; align-items: center; gap: 10px; font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  .trust-point svg {
+    width: 18px; height: 18px; color: var(--accent); flex: 0 0 auto;
+  }
+
+  .social-proof {
+    font-size: 12px; color: var(--text-muted);
+  }
+
+  /* RIGHT PANEL */
+  .form-wrapper {
+    width: 100%; max-width: 400px;
+  }
+
+  .tab-switcher {
+    display: flex; background: var(--bg-input); border-radius: 9999px; padding: 4px;
+    margin-bottom: 40px; gap: 0;
+  }
+
+  .tab-btn {
+    flex: 1; padding: 10px 16px; font-size: 13px; font-weight: 500;
+    border: none; cursor: pointer; border-radius: 9999px;
+    transition: all .2s ease;
+    background: transparent; color: var(--text-muted);
+  }
+
+  .tab-btn:hover { color: var(--text-dim); }
+
+  .tab-btn.active {
+    background: var(--text); color: var(--bg-dark);
+    font-weight: 600;
+  }
+
+  .form-heading {
+    margin-bottom: 32px;
+  }
+
+  .form-heading h2 {
+    font-size: 24px; font-weight: 700; letter-spacing: -0.02em;
+    color: var(--text); margin-bottom: 6px;
+  }
+
+  .form-heading p {
+    font-size: 13px; color: var(--text-muted);
+  }
+
+  .form {
+    display: none;
+  }
+
+  .form.active {
+    display: block; animation: fade .2s ease;
+  }
+
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .field label {
+    display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px;
+  }
+
+  .field input {
+    width: 100%; background: var(--bg-input); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 16px; font-size: 14px; color: var(--text);
+    font-family: var(--font);
+    transition: border-color .2s ease, box-shadow .2s ease;
+    min-height: 44px;
+  }
+
+  .field input::placeholder { color: var(--text-muted); }
+
+  .field input:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent) / 0.15;
+  }
+
+  .field input.error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);
+  }
+
+  .error-msg {
+    font-size: 12px; color: #ef4444; margin-top: 4px; display: none;
+    line-height: 1.4;
+  }
+
+  .field.err .error-msg { display: block; }
+
+  .btn {
+    width: 100%; padding: 12px 16px; font-size: 14px; font-weight: 600;
+    border: none; border-radius: 12px; cursor: pointer;
+    transition: all .15s ease;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 44px;
+  }
+
+  .btn-primary {
+    background: white; color: #09090b; font-weight: 600;
+  }
+
+  .btn-primary:hover { background: #f5f5f5; }
+  .btn-primary:active { background: #e4e4e7; }
+  .btn-primary.loading { opacity: 0.6; pointer-events: none; }
+
+.legal {
+    font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 24px;
+    line-height: 1.6; max-width: 320px; margin-left: auto; margin-right: auto;
+  }
+
+  .legal a {
+    color: var(--text-dim); text-decoration: underline; text-decoration-offset: 2px;
+    transition: color .2s ease;
+  }
+
+  .legal a:hover { color: var(--text); }
+
+  .success {
+    display: none; text-align: center;
+  }
+
+  .success.active {
+    display: block; animation: fade .3s ease;
+  }
+
+  .success-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--accent) / 0.15; display: flex; align-items: center;
+    justify-content: center; margin: 0 auto 24px; color: var(--accent);
+    font-size: 28px; font-weight: 600;
+  }
+
+  .success h2 {
+    font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 8px;
+  }
+
+  .success p {
+    font-size: 14px; color: var(--text-dim); line-height: 1.5;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .container { flex-direction: column; }
+    .left-panel { padding: 32px 24px; justify-content: flex-start; }
+    .right-panel { padding: 32px 24px; }
+    .value-prop { margin-top: 40px; }
+    .value-prop h1 { font-size: 28px; }
+    .left-panel { display: none; }
+    .form-wrapper { max-width: 100%; }
+  }
+
+  @media (max-width: 480px) {
+    .left-panel { padding: 20px 16px; }
+    .right-panel { padding: 20px 16px; }
+    .form-heading h2 { font-size: 20px; }
+    .value-prop h1 { font-size: 24px; }
+    .tab-switcher { margin-bottom: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div>
+      <div class="logo-block">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="echsqA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#18181c"/><stop offset="1" stop-color="#0a0a0c"/></linearGradient></defs><rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="url(#echsqA)" stroke="rgba(255,255,255,0.12)"/><g fill="#FFFFFF"><rect x="4.75" y="19.3" width="4.5" height="7.7" rx="1.2"/><rect x="13.75" y="12.7" width="4.5" height="14.3" rx="1.2"/><rect x="22.75" y="5" width="4.5" height="22" rx="1.2"/></g></svg>
+        echelon
+      </div>
+      <a class="back-link" href="Echelon.html" onclick="return smoothBackToHome(event)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to joinechelon.co
+      </a>
+    </div>
+
+    <div class="value-prop">
+      <h1>Build in public. Connect with purpose.</h1>
+      <p>Join the platform where young founders run their ventures and grow their network.</p>
+      <div class="trust-points">
+        <div class="trust-point">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+          <span>Free to join, always</span>
+        </div>
+        <div class="trust-point">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+          <span>Your network, visualised</span>
+        </div>
+        <div class="trust-point">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+          <span>All your tools in one place</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="social-proof">Joining founders from Melbourne, London, New York and beyond.</div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="form-wrapper">
+      <!-- TAB SWITCHER -->
+      <div class="tab-switcher">
+        <button class="tab-btn active" data-tab="signup">Sign up</button>
+        <button class="tab-btn" data-tab="signin">Sign in</button>
+      </div>
+
+      <!-- SIGN UP FORM -->
+      <form class="form active" id="signup-form" data-tab="signup">
+        <div class="form-heading">
+          <h2>Create your account</h2>
+          <p>Start building. It's free.</p>
+        </div>
+
+        <div class="field">
+          <label for="su-email">Email</label>
+          <input type="email" id="su-email" placeholder="you@yourstartup.com" required />
+          <div class="error-msg"></div>
+        </div>
+
+        <div class="field">
+          <label for="su-password">Password</label>
+          <input type="password" id="su-password" placeholder="At least 8 characters" required />
+          <div class="error-msg"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create account</button>
+
+        <div class="legal">
+          By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </div>
+      </form>
+
+      <!-- SIGN IN FORM -->
+      <form class="form" id="signin-form" data-tab="signin">
+        <div class="form-heading">
+          <h2>Welcome back</h2>
+          <p>Good to have you back.</p>
+        </div>
+
+        <div class="field">
+          <label for="si-email">Email</label>
+          <input type="email" id="si-email" placeholder="you@yourstartup.com" required />
+          <div class="error-msg"></div>
+        </div>
+
+        <div class="field">
+          <label for="si-password">Password</label>
+          <input type="password" id="si-password" placeholder="Enter your password" required />
+          <div class="error-msg"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
+
+      <!-- SUCCESS STATE -->
+      <div class="success" id="success">
+        <div class="success-icon">✓</div>
+        <h2 id="success-title">Welcome to Echelon!</h2>
+        <p id="success-text">Check your email to confirm your account.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://tekhbwqvyhsdgqbcfnts.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRla2hid3F2eWhzZGdxYmNmbnRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MTI0MjIsImV4cCI6MjA5NjQ4ODQyMn0.Eu_trLPpyJmxbbLVL3lUQCqt8xLL7c_6rOISEeWOlzw';
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  function smoothBackToHome(e) {
+    e.preventDefault();
+    setTimeout(() => {
+      window.location.href = 'Echelon.html';
+    }, 150);
+    return false;
+  }
+
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const forms = document.querySelectorAll('.form');
+  const success = document.getElementById('success');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      forms.forEach(f => f.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`#${tab}-form`).classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('focus', () => {
+      input.classList.remove('error');
+      input.parentElement.classList.remove('err');
+    });
+  });
+
+  document.getElementById('signup-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('su-email').value.trim();
+    const password = document.getElementById('su-password').value;
+    const emailField = document.getElementById('su-email');
+    const passwordField = document.getElementById('su-password');
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailField.classList.add('error');
+      emailField.parentElement.classList.add('err');
+      if (!email) emailField.parentElement.querySelector('.error-msg').textContent = 'Email is required';
+      else emailField.parentElement.querySelector('.error-msg').textContent = 'Invalid email';
+      return;
+    }
+    if (!password || password.length < 8) {
+      passwordField.classList.add('error');
+      passwordField.parentElement.classList.add('err');
+      passwordField.parentElement.querySelector('.error-msg').textContent = 'Password must be at least 8 characters';
+      return;
+    }
+
+    const btn = document.querySelector('#signup-form button[type="submit"]');
+    btn.classList.add('loading');
+    btn.textContent = 'Creating...';
+
+    try {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        if (error.message.includes('already registered')) {
+          emailField.classList.add('error');
+          emailField.parentElement.classList.add('err');
+          emailField.parentElement.querySelector('.error-msg').textContent = 'Email already registered';
+        } else {
+          passwordField.classList.add('error');
+          passwordField.parentElement.classList.add('err');
+          passwordField.parentElement.querySelector('.error-msg').textContent = error.message || 'Sign up failed';
+        }
+        btn.classList.remove('loading');
+        btn.textContent = 'Create account';
+        return;
+      }
+      forms.forEach(f => f.classList.remove('active'));
+      // New user → onboarding
+      setTimeout(() => { window.location.href = 'welcome.html'; }, 800);
+    } catch (err) {
+      passwordField.classList.add('error');
+      passwordField.parentElement.classList.add('err');
+      passwordField.parentElement.querySelector('.error-msg').textContent = 'An error occurred';
+      btn.classList.remove('loading');
+      btn.textContent = 'Create account';
+    }
+  });
+
+  document.getElementById('signin-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('si-email').value.trim();
+    const password = document.getElementById('si-password').value;
+    const emailField = document.getElementById('si-email');
+    const passwordField = document.getElementById('si-password');
+
+    if (!email || !password) {
+      if (!email) {
+        emailField.classList.add('error');
+        emailField.parentElement.classList.add('err');
+        emailField.parentElement.querySelector('.error-msg').textContent = 'Email is required';
+      }
+      if (!password) {
+        passwordField.classList.add('error');
+        passwordField.parentElement.classList.add('err');
+        passwordField.parentElement.querySelector('.error-msg').textContent = 'Password is required';
+      }
+      return;
+    }
+
+    const btn = document.querySelector('#signin-form button[type="submit"]');
+    btn.classList.add('loading');
+    btn.textContent = 'Signing in...';
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        emailField.classList.add('error');
+        emailField.parentElement.classList.add('err');
+        emailField.parentElement.querySelector('.error-msg').textContent = 'Invalid email or password';
+        btn.classList.remove('loading');
+        btn.textContent = 'Sign in';
+        return;
+      }
+      // Check onboarding status before redirecting
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('has_onboarded')
+        .eq('id', (await supabase.auth.getUser()).data.user.id)
+        .single();
+
+      if (profile?.has_onboarded) {
+        setTimeout(() => { window.location.href = '/dashboard'; }, 800);
+      } else {
+        setTimeout(() => { window.location.href = 'welcome.html'; }, 800);
+      }
+    } catch (err) {
+      emailField.classList.add('error');
+      emailField.parentElement.classList.add('err');
+      emailField.parentElement.querySelector('.error-msg').textContent = 'An error occurred';
+      btn.classList.remove('loading');
+      btn.textContent = 'Sign in';
+    }
+  });
+
+
+</script>
+
+</body>
+</html>

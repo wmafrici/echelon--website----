@@ -40,9 +40,7 @@
   }
   .bg-veil {
     position: fixed; inset: 0; z-index: 1; pointer-events: none;
-    background:
-      radial-gradient(80% 55% at 50% -8%, oklch(0.56 0.15 250 / 0.12), transparent 60%),
-      linear-gradient(180deg, rgba(5,5,6,0) 0%, rgba(5,5,6,0.18) 60%, rgba(5,5,6,0.55) 100%);
+    background: linear-gradient(180deg, rgba(5,5,6,0) 0%, rgba(5,5,6,0.18) 60%, rgba(5,5,6,0.55) 100%);
   }
   .grain {
     position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0.045;
@@ -97,9 +95,7 @@
     border: 1px solid var(--hair); border-radius: 980px; background: rgba(255,255,255,0.02); margin-bottom: 38px;
   }
   .eyebrow .ping { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); box-shadow: 0 0 8px var(--violet); }
-  h1.hero-title {
-    font-size: clamp(42px, 7vw, 96px); font-weight: 600; line-height: 0.98; letter-spacing: -0.04em; max-width: 14ch;
-  }
+  h1.hero-title { font-size: clamp(42px, 7vw, 96px); font-weight: 600; line-height: 0.98; letter-spacing: -0.04em; max-width: 16ch; text-align: left; }
   h1.hero-title .soft { color: var(--text-dim); }
   .hero-lead {
     display: grid; grid-template-columns: 1fr minmax(280px, 360px); gap: 56px; align-items: end; margin-top: 42px;
@@ -437,8 +433,8 @@
   .tier .tdesc { margin-top: 10px; font-size: 14px; color: var(--text-mid); line-height: 1.5; min-height: 40px; }
   .tier .tfeat { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--hair-soft); display: flex; flex-direction: column; gap: 12px; flex: 1; }
   .tier .tfeat .f { position: relative; padding-left: 27px; font-size: 14px; color: var(--text); line-height: 1.45; }
-  .tier .tfeat .f .ck { position: absolute; left: 0; top: 2px; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,0.08); color: var(--text-mid); font-size: 9px; font-weight: 700; }
-  .tier.featured .tfeat .f .ck { background: var(--violet); color: #fff; }
+  .tier .tfeat .f .ck { position: absolute; left: 0; top: 0; font-size: 13px; font-weight: 400; color: var(--text-dim); line-height: 1.45; }
+  .tier.featured .tfeat .f .ck { color: var(--text-mid); }
   .tier .tfeat .f b { font-weight: 600; }
   .tier .tfeat .grp { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-top: 6px; }
   .tier .tfeat .grp:first-child { margin-top: 0; }
@@ -518,6 +514,48 @@
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; transition: none; }
   }
+
+  /* ===== RESTRUCTURE — Jun 2026 ===== */
+  .wrapn { max-width: 1200px; margin: 0 auto; padding: 0 32px; text-align: left; }
+  .r-sec { padding: 88px 0; border-top: 1px solid var(--hair); }
+  .r-label { display: block; font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; }
+  .r-h { font-size: clamp(26px, 3.5vw, 38px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; color: var(--text); margin-top: 0; max-width: 28ch; text-wrap: balance; }
+  .r-p { font-size: 16px; line-height: 1.65; color: var(--text-mid); margin-top: 10px; max-width: 65ch; text-align: left; }
+
+  /* hero */
+  .r-hero { min-height: 85vh; display: flex; align-items: center; padding: 100px 0 60px; }
+  .r-hero .inner { max-width: 780px; margin: 0; }
+  .r-badge { display: inline-flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid); padding: 7px 15px; border: 1px solid var(--hair); border-radius: 980px; background: rgba(255,255,255,0.02); margin-bottom: 24px; }
+
+  .r-hero .r-sub { font-size: clamp(17px, 1.9vw, 19px); line-height: 1.65; color: var(--text-mid); margin-top: 20px; max-width: 50rem; text-align: left; }
+  .r-actions { margin-top: 28px; }
+  .btn-pill { border-radius: 980px; }
+  .r-trust { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--text-dim); margin-top: 14px; }
+  .cs-pill { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); border: 1px solid var(--hair); border-radius: 980px; padding: 2px 8px; display: inline-flex; align-items: center; margin-left: 8px; vertical-align: middle; position: relative; top: -1px; }
+
+  /* feature grid */
+  .fgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 42px; max-width: 100%; }
+  @media (max-width: 760px) { .fgrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .fgrid { grid-template-columns: 1fr; } }
+  .fcard { border: 1px solid var(--hair-soft); border-radius: 16px; padding: 22px; background: linear-gradient(180deg, rgba(255,255,255,0.022), rgba(255,255,255,0.006)); transition: border-color .25s ease, transform .25s ease; }
+  .fcard:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-2px); }
+  .fcard h4 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin-top: 0; line-height: 1.3; }
+  .fcard p { font-size: 13px; line-height: 1.6; color: var(--text-mid); margin-top: 8px; }
+
+  /* pricing — unified 3-col */
+  .r-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 48px; align-items: stretch; max-width: 100%; }
+  @media (max-width: 860px) { .r-tiers { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; } }
+  .tflag.muted { color: var(--text-dim); }
+  .r-contactline { text-align: left; font-size: 14px; color: var(--text-dim); margin-top: 40px; }
+  .r-contactline a { color: var(--violet); transition: opacity .2s ease; }
+  .r-contactline a:hover { opacity: 0.8; }
+
+  /* final cta */
+  .r-final { padding: 100px 0; border-top: 1px solid var(--hair); }
+  .r-final .wrapn { text-align: center; }
+  .r-final h2 { font-size: clamp(30px, 4.6vw, 46px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; color: var(--text); }
+  .r-final p { font-size: 16px; line-height: 1.65; color: var(--text-mid); margin: 14px auto 0; max-width: 46ch; }
+  .r-final .r-actions { display: flex; flex-direction: column; align-items: center; }
 </style>
 </head>
 <body>
@@ -532,12 +570,9 @@
       <div class="nav-mid">
         <a href="#platform">Platform</a>
         <a href="#pricing">Pricing</a>
-        <a href="#contact">Contact</a>
-        <a href="#membership">Membership</a>
       </div>
       <div class="nav-right">
-        <span class="nav-status"><span class="ping"></span> Coming soon</span>
-        <a class="nav-cta" href="#waitlist">Join the waitlist</a>
+        <a class="nav-cta" href="auth.html">Create account</a>
       </div>
     </div>
   </nav>
@@ -545,556 +580,128 @@
   <div class="content">
 
     <!-- HERO -->
-    <header class="hero" id="top" data-screen-label="Hero">
-      <div class="wrap">
-        <span class="eyebrow"><span class="ping"></span> Coming soon · Join the waitlist</span>
-        <h1 class="hero-title">Find your people.<br />Centralise your ventures.<br /><span class="soft">Build a legacy.</span></h1>
-        <div class="free-flag"><span class="fchk"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><b>Free to join. Free to connect.</b> Always.</div>
-        <div class="hero-lead">
-          <p class="hero-sub">The platform where founders already building something real find the right people, track their ventures, and run it all from one place.</p>
-          <div class="hero-actions">
-            <div class="pair">
-              <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
-              <a class="btn btn-ghost" href="#platform">Explore the platform <span class="chev">›</span></a>
-            </div>
-            <span class="note">First month free · No card required</span>
+    <header class="r-hero" id="top" data-screen-label="Hero">
+      <div class="wrapn">
+        <div class="inner">
+          <span class="r-badge">Join now</span>
+          <h1 class="hero-title">Find your people.<br />Centralise your ventures.<br /><span class="soft">Build a legacy.</span></h1>
+          <p class="r-sub">The platform built for young founders — connect with your network, run your business, and build something that lasts.</p>
+          <div class="r-actions">
+            <a class="btn btn-primary btn-pill" href="auth.html">Create your account</a>
+            <div class="r-trust">Free to join · No card required</div>
           </div>
-        </div>
-
-        <div class="strip">
-          <div class="s">Status<b>Coming soon</b></div>
-          <div class="s">The platform<b>Five tools, one place</b></div>
-          <div class="s">Built for<b>Founders already building</b></div>
-          <div class="s">Founding member offer<b>First cohort free for a month</b></div>
-        </div>
-
-        <div class="showcase" id="showcase">
-          <div class="showcase-cap">
-            <span>FIG. 00 — The workspace</span>
-            <span class="live2"><span class="ping"></span> Live preview</span>
-          </div>
-          <div class="mock workspace" id="workspace">
-            <div class="mock-bar">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="tablabel">echelon — workspace</span>
-              <span class="ws-live"><span class="ws-dot"></span> Live</span>
-            </div>
-            <div class="ws-tabs" role="tablist">
-              <button class="ws-tab on" data-tab="overview" role="tab">Overview</button>
-              <button class="ws-tab" data-tab="network" role="tab">Network</button>
-              <button class="ws-tab" data-tab="revenue" role="tab">Revenue</button>
-            </div>
-            <div class="ws-body">
-
-              <!-- OVERVIEW -->
-              <div class="ws-panel on" data-panel="overview">
-                <div class="ws-stats">
-                  <div class="ws-stat">
-                    <div class="wl">Monthly revenue</div>
-                    <div class="wv">$12,480 <span class="trend">▲ 18%</span></div>
-                    <div class="wsub">vs. last month</div>
-                  </div>
-                  <div class="ws-stat">
-                    <div class="wl">Active projects</div>
-                    <div class="wv">3</div>
-                    <div class="wsub">$14,200 total value</div>
-                  </div>
-                  <div class="ws-stat">
-                    <div class="wl">Unread messages</div>
-                    <div class="wv">4</div>
-                    <div class="wsub">2 co-founders waiting</div>
-                  </div>
-                  <div class="ws-stat">
-                    <div class="wl">New matches</div>
-                    <div class="wv">2</div>
-                    <div class="ws-mini-avatars"><span class="avatar av1"></span><span class="avatar av3"></span></div>
-                  </div>
-                </div>
-                <div class="ws-ovgrid">
-                  <div class="ws-card">
-                    <div class="wch">Revenue · last 7 months</div>
-                    <div class="ws-chart" id="ovChart">
-                      <div class="bar" data-h="42"></div>
-                      <div class="bar" data-h="58"></div>
-                      <div class="bar" data-h="50"></div>
-                      <div class="bar" data-h="72"></div>
-                      <div class="bar" data-h="64"></div>
-                      <div class="bar" data-h="90"></div>
-                      <div class="bar" data-h="80"></div>
-                    </div>
-                  </div>
-                  <div class="ws-card">
-                    <div class="wch">Activity</div>
-                    <div class="ws-feed">
-                      <div class="fi"><span class="fdot"></span><div><div class="ft">New co-founder match — Maya T. from London</div><div class="ftime">2m ago</div></div></div>
-                      <div class="fi"><span class="fdot"></span><div><div class="ft">Co-founder message received — Alex M.</div><div class="ftime">1h ago</div></div></div>
-                      <div class="fi"><span class="fdot"></span><div><div class="ft">Project milestone due — Echelon Build — today</div><div class="ftime">Today</div></div></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- NETWORK -->
-              <div class="ws-panel" data-panel="network">
-                <div class="ws-members">
-                  <div class="ws-member">
-                    <span class="avatar av1" style="width:42px;height:42px;"></span>
-                    <div>
-                      <div class="mname">Alex R. <span class="mloc">Sydney</span></div>
-                      <div class="mbuild">Building a SaaS tool</div>
-                      <div class="mlook">Looking for: <b>Developer</b></div>
-                    </div>
-                    <div class="mright">
-                      <div class="mscore">91.2 <span>score</span></div>
-                      <div class="mbtns"><button class="ws-btn connect">Connect</button><button class="ws-btn pass">Pass</button></div>
-                    </div>
-                  </div>
-                  <div class="ws-member">
-                    <span class="avatar av3" style="width:42px;height:42px;"></span>
-                    <div>
-                      <div class="mname">Maya T. <span class="mloc">London</span></div>
-                      <div class="mbuild">Building a brand agency</div>
-                      <div class="mlook">Looking for: <b>Co-founder</b></div>
-                    </div>
-                    <div class="mright">
-                      <div class="mscore">88.7 <span>score</span></div>
-                      <div class="mbtns"><button class="ws-btn connect">Connect</button><button class="ws-btn pass">Pass</button></div>
-                    </div>
-                  </div>
-                  <div class="ws-member">
-                    <span class="avatar av2" style="width:42px;height:42px;"></span>
-                    <div>
-                      <div class="mname">Jordan K. <span class="mloc">Melbourne</span></div>
-                      <div class="mbuild">Building an ecommerce brand</div>
-                      <div class="mlook">Looking for: <b>Marketer</b></div>
-                    </div>
-                    <div class="mright">
-                      <div class="mscore">79.4 <span>score</span></div>
-                      <div class="mbtns"><button class="ws-btn connect">Connect</button><button class="ws-btn pass">Pass</button></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="ws-netstat"><b>847 founders</b> in your network — 2 new matches today</div>
-              </div>
-
-              <!-- REVENUE -->
-              <div class="ws-panel" data-panel="revenue">
-                <div class="ws-graph" id="revGraph">
-                  <svg viewBox="0 0 560 180" preserveAspectRatio="none" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="wsGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0" stop-color="oklch(0.66 0.15 248 / 0.34)"></stop>
-                        <stop offset="1" stop-color="oklch(0.66 0.15 248 / 0)"></stop>
-                      </linearGradient>
-                    </defs>
-                    <path class="garea" d="M30,138 L130,120 L230,126 L330,92 L430,74 L520,44 L520,160 L30,160 Z"></path>
-                    <path class="gline" d="M30,138 L130,120 L230,126 L330,92 L430,74 L520,44"></path>
-                    <circle class="gdot" cx="30" cy="138" r="3"></circle>
-                    <circle class="gdot" cx="130" cy="120" r="3"></circle>
-                    <circle class="gdot" cx="230" cy="126" r="3"></circle>
-                    <circle class="gdot" cx="330" cy="92" r="3"></circle>
-                    <circle class="gdot" cx="430" cy="74" r="3"></circle>
-                    <circle class="gdot" cx="520" cy="44" r="3"></circle>
-                    <text class="gaxis" x="30" y="176">Jan</text>
-                    <text class="gaxis" x="125" y="176">Feb</text>
-                    <text class="gaxis" x="225" y="176">Mar</text>
-                    <text class="gaxis" x="325" y="176">Apr</text>
-                    <text class="gaxis" x="425" y="176">May</text>
-                    <text class="gaxis" x="510" y="176">Jun</text>
-                  </svg>
-                </div>
-                <div class="ws-metrics">
-                  <div class="ws-metric"><div class="ml">Total revenue</div><div class="mv">$47,240</div></div>
-                  <div class="ws-metric"><div class="ml">MRR</div><div class="mv">$12,480</div></div>
-                  <div class="ws-metric"><div class="ml">Growth</div><div class="mv up">+18%</div></div>
-                </div>
-                <div class="ws-tx">
-                  <div class="txr"><span class="txn">Retainer — Northwind</span><span class="txa">$4,200</span><span class="txd">Jun 6</span></div>
-                  <div class="txr"><span class="txn">Echelon Build — milestone</span><span class="txa">$3,500</span><span class="txd">Jun 2</span></div>
-                  <div class="txr"><span class="txn">Brand sprint — Atlas</span><span class="txa">$2,800</span><span class="txd">May 28</span></div>
-                  <div class="txr"><span class="txn">Subscriptions — May</span><span class="txa">$1,980</span><span class="txd">May 31</span></div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- FEATURE NAV -->
-          <div class="featnav" id="featnav">
-            <div class="featcard" data-desc="<b>Feed</b> — A real-time pulse of everything moving across your ventures and network.">
-              <span class="fci"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
-              <span class="fcl">Feed</span>
-            </div>
-            <div class="featcard" data-desc="<b>Matching</b> — Curated co-founder introductions scored on real fit, not luck.">
-              <span class="fci"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M15 19a4.5 4.5 0 0 1 6 0"/></svg></span>
-              <span class="fcl">Matching</span>
-            </div>
-            <div class="featcard" data-desc="<b>Projects</b> — Track milestones and roadmaps across every venture in one view.">
-              <span class="fci"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="2"/></svg></span>
-              <span class="fcl">Projects</span>
-            </div>
-            <div class="featcard" data-desc="<b>CRM</b> — Every investor, customer and advisor relationship, remembered.">
-              <span class="fci"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>
-              <span class="fcl">CRM</span>
-            </div>
-            <div class="featcard" data-desc="<b>Revenue</b> — Connect your numbers and watch growth render in real time.">
-              <span class="fci"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg></span>
-              <span class="fcl">Revenue</span>
-            </div>
-          </div>
-          <div class="featpop" id="featpop"></div>
         </div>
       </div>
     </header>
 
-    <!-- PLATFORM / BENTO -->
-    <section class="platform" id="platform" data-screen-label="Platform">
-      <div class="wrap">
-        <div class="ledger reveal"><span class="lx">[ 01 ]</span><span class="lt">The Platform</span><span class="lrule"></span><span class="lc">Five tools · One workspace</span></div>
-        <div class="platform-intro reveal">
-          <h2>Everything you're building, finally in one place.</h2>
-          <p>Stop running your company across fourteen browser tabs. Echelon brings the tools serious founders actually need into a single, considered workspace.</p>
-        </div>
-
-        <div class="bento">
-
-          <!-- Co-founder matching -->
-          <article class="tile big reveal" data-screen-label="Co-founder matching">
-            <div class="tile-body">
-              <div class="tile-head"><span class="tile-code">01</span><span class="tile-name">Co-founder matching</span></div>
-              <h3>Find the people worth building with.</h3>
-              <p>Curated, intentional introductions to founders who share your ambition, skills, and stage — not an endless feed of strangers.</p>
-            </div>
-            <div class="tile-mock">
-              <div class="mock">
-                <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tablabel">matches</span></div>
-                <div class="pad">
-                  <div class="match-grid">
-                    <div class="card"><div class="row" style="margin-bottom:12px;"><span class="avatar av1"></span><div class="col" style="gap:6px;"><div class="line" style="width:64px;"></div><div class="line sm" style="width:44px;"></div></div></div><span class="pill on">96% fit</span></div>
-                    <div class="card"><div class="row" style="margin-bottom:12px;"><span class="avatar av2"></span><div class="col" style="gap:6px;"><div class="line" style="width:58px;"></div><div class="line sm" style="width:50px;"></div></div></div><span class="pill">91% fit</span></div>
-                    <div class="card"><div class="row" style="margin-bottom:12px;"><span class="avatar av3"></span><div class="col" style="gap:6px;"><div class="line" style="width:70px;"></div><div class="line sm" style="width:40px;"></div></div></div><span class="pill">88% fit</span></div>
-                    <div class="card"><div class="row" style="margin-bottom:12px;"><span class="avatar av4"></span><div class="col" style="gap:6px;"><div class="line" style="width:54px;"></div><div class="line sm" style="width:48px;"></div></div></div><span class="pill">84% fit</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <!-- SECTION 2 — WHAT ECHELON GIVES YOU -->
+    <section class="r-sec" id="platform" data-screen-label="Platform">
+      <div class="wrapn">
+        <span class="r-label reveal">The Platform</span>
+        <h2 class="r-h reveal">Everything you need to run and grow your venture</h2>
+        <p class="r-p reveal">Stop running your company across fourteen tabs. Echelon brings the tools serious founders actually need into one place.</p>
+        <div class="fgrid">
+          <article class="fcard reveal">
+            <h4>Founder Network</h4>
+            <p>Connect with founders, grow your web of relationships visually.</p>
           </article>
-
-          <!-- Messaging -->
-          <article class="tile small reveal" data-screen-label="Messaging">
-            <div class="tile-body">
-              <div class="tile-head"><span class="tile-code">02</span><span class="tile-name">Messaging</span></div>
-              <h3>Conversations that move things forward.</h3>
-              <p>Talk to co-founders, mentors, and your team — every thread sits next to the work it's about.</p>
-            </div>
-            <div class="tile-mock">
-              <div class="mock">
-                <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tablabel">— with Maya R.</span></div>
-                <div class="pad" style="display:flex; flex-direction:column; gap:10px;">
-                  <div class="bubble them"><div class="line" style="width:120px; margin-bottom:6px;"></div><div class="line sm" style="width:90px;"></div></div>
-                  <div class="bubble me"><div class="line" style="width:100px; margin-bottom:6px;"></div><div class="line sm" style="width:64px; background:rgba(255,255,255,0.4);"></div></div>
-                  <div class="bubble them"><div class="line" style="width:80px;"></div></div>
-                  <div class="row" style="margin-top:6px; gap:10px;">
-                    <div class="card" style="flex:1; padding:11px 14px;"><div class="line sm" style="width:90px;"></div></div>
-                    <span class="pill on" style="padding:9px 14px;">Send</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <article class="fcard reveal">
+            <h4>CRM</h4>
+            <p>Track every lead, client, and contact in one organised place.</p>
           </article>
-
-          <!-- Project tracking -->
-          <article class="tile reveal" data-screen-label="Project Tracker">
-            <div class="tile-body">
-              <div class="tile-head"><span class="tile-code">03</span><span class="tile-name">Project Tracker</span></div>
-              <h3>Every milestone, in focus.</h3>
-              <p>Turn the chaos of building into clear, moving pieces. Always know exactly what's next.</p>
-            </div>
-            <div class="tile-mock">
-              <div class="mock">
-                <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tablabel">roadmap</span></div>
-                <div class="pad">
-                  <div class="kanban">
-                    <div class="kcol">
-                      <div class="line sm" style="width:40px; margin-bottom:2px;"></div>
-                      <div class="kcard"><div class="line" style="width:60px; margin-bottom:8px;"></div><div class="line sm" style="width:80px;"></div></div>
-                      <div class="kcard"><div class="line" style="width:48px; margin-bottom:8px;"></div><div class="line sm" style="width:70px;"></div></div>
-                    </div>
-                    <div class="kcol">
-                      <div class="line sm" style="width:52px; margin-bottom:2px;"></div>
-                      <div class="kcard"><div class="line" style="width:66px; margin-bottom:8px;"></div><div class="row" style="gap:6px;"><span class="avatar av2" style="width:18px;height:18px;"></span><div class="line sm" style="width:40px;"></div></div></div>
-                    </div>
-                    <div class="kcol">
-                      <div class="line sm" style="width:36px; margin-bottom:2px;"></div>
-                      <div class="kcard"><div class="line" style="width:54px; margin-bottom:8px;"></div><span class="pill on" style="font-size:10px; padding:3px 8px;">Shipped</span></div>
-                      <div class="kcard"><div class="line" style="width:62px; margin-bottom:8px;"></div><span class="pill on" style="font-size:10px; padding:3px 8px;">Shipped</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <article class="fcard reveal">
+            <h4>Project Tracker</h4>
+            <p>Run your ventures with strategic steps and milestone tracking.</p>
           </article>
-
-          <!-- Revenue -->
-          <article class="tile reveal" data-screen-label="Revenue Dashboard">
-            <div class="tile-body">
-              <div class="tile-head"><span class="tile-code">04</span><span class="tile-name">Revenue Dashboard</span></div>
-              <h3>Watch it become real.</h3>
-              <p>Connect your numbers and see growth as it happens — the metrics that matter, rendered with clarity.</p>
-            </div>
-            <div class="tile-mock">
-              <div class="mock">
-                <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tablabel">revenue</span></div>
-                <div class="pad">
-                  <div class="row" style="justify-content:space-between; align-items:flex-end; margin-bottom:18px;">
-                    <div class="col" style="gap:6px;"><div class="stat-num" style="font-size:24px;">$48,210</div><div class="stat-lbl">This quarter · ▲ 32%</div></div>
-                    <div class="row" style="gap:7px;"><span class="pill">30d</span><span class="pill on">90d</span><span class="pill">1y</span></div>
-                  </div>
-                  <div class="chart" style="height:120px;">
-                    <div class="bar" style="height:34%;"></div>
-                    <div class="bar" style="height:46%;"></div>
-                    <div class="bar" style="height:40%;"></div>
-                    <div class="bar" style="height:58%;"></div>
-                    <div class="bar" style="height:52%;"></div>
-                    <div class="bar" style="height:70%;"></div>
-                    <div class="bar" style="height:64%;"></div>
-                    <div class="bar" style="height:84%;"></div>
-                    <div class="bar" style="height:100%;"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <article class="fcard reveal">
+            <h4>Revenue Dashboard</h4>
+            <p>Log income, track growth, and know your numbers at a glance.</p>
           </article>
-
-          <!-- CRM (full width) -->
-          <article class="tile full reveal" data-screen-label="CRM">
-            <div class="tile-inner">
-              <div class="tile-body">
-                <div class="tile-head"><span class="tile-code">05</span><span class="tile-name">CRM</span></div>
-                <h3>Every relationship, remembered.</h3>
-                <p>Investors, customers, advisors, leads — all in one organised system that remembers what you can't. Know who to follow up with, and never let momentum slip.</p>
-              </div>
-              <div class="tile-mock">
-                <div class="mock">
-                  <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tablabel">contacts</span></div>
-                  <div class="pad" style="padding:14px 18px 18px;">
-                    <div class="crm-filter">
-                      <span class="pill on">All</span>
-                      <span class="pill">Investor</span>
-                      <span class="pill">Customer</span>
-                      <span class="pill">Advisor</span>
-                      <span class="pill">Lead</span>
-                    </div>
-                    <div class="crm-row"><span class="avatar av3"></span><div class="col" style="gap:6px;"><div class="line" style="width:90px;"></div><div class="line sm" style="width:60px;"></div></div><span class="pill">Investor</span></div>
-                    <div class="crm-row"><span class="avatar av2"></span><div class="col" style="gap:6px;"><div class="line" style="width:76px;"></div><div class="line sm" style="width:54px;"></div></div><span class="pill">Customer</span></div>
-                    <div class="crm-row"><span class="avatar av4"></span><div class="col" style="gap:6px;"><div class="line" style="width:104px;"></div><div class="line sm" style="width:48px;"></div></div><span class="pill">Advisor</span></div>
-                    <div class="crm-row"><span class="avatar av1"></span><div class="col" style="gap:6px;"><div class="line" style="width:84px;"></div><div class="line sm" style="width:64px;"></div></div><span class="pill">Lead</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <article class="fcard reveal">
+            <h4>Public Profile</h4>
+            <p>Your founder identity — shareable, professional, always on.</p>
           </article>
-
+          <article class="fcard reveal">
+            <h4>Co-founder Matching</h4>
+            <p>Find the right people to build with based on skills and stage.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- MEMBERSHIP -->
-    <section class="membership" id="membership" data-screen-label="Membership">
-      <div class="wrap">
-        <div class="ledger reveal"><span class="lx">[ 02 ]</span><span class="lt">Membership</span><span class="lrule"></span><span class="lc">Be first in</span></div>
-        <div class="membership-grid">
-          <div class="reveal">
-            <h2>Built for the serious few.</h2>
-            <p>Echelon isn't for everyone. It's for founders who are already building something real — and want the tools, the people, and the standard to match.</p>
-            <div style="margin-top:34px;">
-              <a class="btn btn-primary" href="#waitlist">Apply for membership</a>
-            </div>
-          </div>
-          <div class="criteria reveal">
-            <div class="ci"><span class="cn">01</span><div class="ct"><b>You're already building.</b><span>Shipping, not just planning — an idea in motion.</span></div></div>
-            <div class="ci"><span class="cn">02</span><div class="ct"><b>You're ambitious.</b><span>Building with the tools and standard the last generation never had.</span></div></div>
-            <div class="ci"><span class="cn">03</span><div class="ct"><b>You want a standard.</b><span>Surrounded by founders who raise your game.</span></div></div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- SECTION 3 — PRICING -->
+    <section class="r-sec" id="pricing" data-screen-label="Pricing">
+      <div class="wrapn">
+        <span class="r-label reveal">Pricing</span>
+        <h2 class="r-h reveal">Simple, honest pricing</h2>
+        <p class="r-p reveal">The community is free, forever. Pay only when you need the tools to run a real venture.</p>
 
-    <!-- FREE VS FOUNDER -->
-    <section class="split" id="plans" data-screen-label="Free vs Founder">
-      <div class="wrap">
-        <div class="ledger reveal"><span class="lx">[ 03 ]</span><span class="lt">What's Free vs What's Founder</span><span class="lrule"></span><span class="lc">Community · Always free</span></div>
-        <div class="split-head reveal">
-          <h2>The whole community. Free, forever.</h2>
-          <p>Echelon never gatekeeps connection. Anyone can join, find co-founders, and discover opportunities — at no cost, always. The paid tier adds serious operational tools on top — and every paid plan keeps the full free community layer.</p>
-        </div>
-        <div class="split-grid">
-
-          <!-- FREE -->
-          <article class="split-card reveal" data-screen-label="Free, forever">
-            <div class="sc-head">
-              <span class="sc-eyebrow">The community layer</span>
-              <h3>Free, forever</h3>
-            </div>
-            <div class="split-list">
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Profile</b> <span>— your founder identity</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Feed</b> <span>— wins, ventures, updates, discussions</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Co-Founder Matching</b> <span>— find people to build with</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Messaging</b> <span>— talk to your network</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>The Board</b> <span>— browse jobs and opportunities</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Echelon Score</b> <span>— credibility from your profile, connections &amp; activity</span></span></div>
-            </div>
-            <div class="split-foot">The community layer. Connection and opportunity — open to everyone, no cost, ever.</div>
-          </article>
-
-          <!-- FOUNDER -->
-          <article class="split-card founder reveal" data-screen-label="Echelon Founder">
-            <div class="sc-head">
-              <span class="sc-eyebrow">The operational layer</span>
-              <h3>Echelon Founder</h3>
-              <span class="sc-tag">from $12/month</span>
-            </div>
-            <div class="split-list">
-              <div class="split-item incl"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Everything in the free community layer</b> <span>— still yours, fully included</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Project Tracker</b> <span>— manage your ventures</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>CRM</b> <span>— manage leads and clients</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Revenue Dashboard</b> <span>— Stripe connected, live data</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Verified Score</b> <span>— verify real revenue &amp; completed projects to strengthen your Echelon Score</span></span></div>
-              <div class="split-item"><span class="si-ck"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="si-t"><b>Signal &amp; The Filter</b> <span class="si-tag">Founder Max</span> <span>— AI founder intelligence</span></span></div>
-            </div>
-            <div class="split-foot">Built on top of everything in Free. Project Tracker, CRM &amp; Revenue Dashboard come with <b style="color:var(--text-mid);font-weight:600;">Founder</b> ($11.99) — items marked <span class="si-tag">Founder Max</span> unlock on <b style="color:var(--text-mid);font-weight:600;">Founder Max</b>.</div>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- PRICING -->
-    <section class="pricing" id="pricing" data-screen-label="Pricing">
-      <div class="wrap">
-        <div class="ledger reveal"><span class="lx">[ 04 ]</span><span class="lt">Pricing</span><span class="lrule"></span><span class="lc">Simple · Honest</span></div>
-        <div class="pricing-head reveal">
-          <h2>The community is free. Pay only to operate.</h2>
-          <p>The community layer is free, forever. Upgrade only when you need the operational tools to run real ventures.</p>
-        </div>
-
-        <div class="offer reveal">
-          <span class="badge">Launch offer</span>
-          <span class="otext">The <b>founding member offer</b> — your first month <b>completely free</b> while we onboard our first cohort. Full platform access, no card required.</span>
-          <span class="ocount"><span class="live-dot"></span> Limited spots</span>
-        </div>
-
-        <div class="tiers">
+        <div class="r-tiers">
+          <!-- Free -->
           <article class="tier reveal">
             <div class="tname">Free</div>
-            <div class="tprice"><span class="amt">$0</span><span class="per">/ forever</span></div>
-            <div class="tdesc">The community layer — connect, match and discover. Free, forever.</div>
+            <div class="tprice"><span class="amt">$0</span><span class="per">/month</span></div>
+            <div class="tdesc">The community layer. Connect, match, and discover — open to everyone, forever.</div>
             <div class="tfeat">
-              <div class="grp">Community layer</div>
-              <div class="f"><span class="ck">✓</span> Founder profile</div>
-              <div class="f"><span class="ck">✓</span> The <b>Feed</b> — wins, ventures &amp; updates</div>
-              <div class="f"><span class="ck">✓</span> Co-founder matching</div>
-              <div class="f"><span class="ck">✓</span> Direct messaging</div>
-              <div class="f"><span class="ck">✓</span> <b>The Board</b> — jobs &amp; opportunities</div>
-              <div class="f"><span class="ck">✓</span> <b>Echelon Score</b> — credibility from your profile &amp; activity</div>
+              <div class="f"><span class="ck">—</span> Founder profile</div>
+              <div class="f"><span class="ck">—</span> The <b>Feed</b> — wins, ventures &amp; updates</div>
+              <div class="f"><span class="ck">—</span> Co-founder matching</div>
+              <div class="f"><span class="ck">—</span> Direct messaging <span class="cs-pill">Soon</span></div>
+              <div class="f"><span class="ck">—</span> The <b>Board</b> — jobs &amp; opportunities <span class="cs-pill">Soon</span></div>
+              <div class="f"><span class="ck">—</span> Echelon Score</div>
             </div>
-            <div class="tcta"><a class="btn btn-ghost" href="#waitlist">Join the waitlist</a></div>
+            <div class="tcta"><a class="btn btn-ghost" href="auth.html">Create your account</a></div>
             <div class="tnote">Free forever · No card required</div>
           </article>
 
-          <article class="tier reveal">
-            <div class="tname">Founder</div>
-            <div class="tprice"><span class="amt">$11.99</span><span class="per">/ month</span></div>
-            <div class="tdesc">The operational layer — the core tools to start running a real venture.</div>
-            <div class="tfeat">
-              <div class="f"><span class="ck">✓</span> <b>Everything in Free</b> — the full community layer</div>
-              <div class="grp">Operational tools</div>
-              <div class="f"><span class="ck">✓</span> <b>Project Tracker</b> — up to 3 ventures</div>
-              <div class="f"><span class="ck">✓</span> <b>CRM</b> — manage leads &amp; clients</div>
-              <div class="f"><span class="ck">✓</span> <b>Revenue Dashboard</b> — Stripe connected</div>
-              <div class="f"><span class="ck">✓</span> <b>Verified Echelon Score</b> — verify revenue &amp; projects to strengthen your score</div>
-            </div>
-            <div class="tcta"><a class="btn btn-ghost" href="#waitlist">Join the waitlist</a></div>
-            <div class="tnote">Founding member offer — first month free while we onboard our first cohort</div>
-          </article>
-
+          <!-- Founder -->
           <article class="tier featured reveal">
             <span class="tflag">Most popular</span>
-            <div class="tname">Founder Max</div>
-            <div class="tprice"><span class="amt">$24.99</span><span class="per">/ month</span></div>
-            <div class="tdesc">Run your entire venture on Echelon. Every operational tool, unlimited — plus the founder intelligence the others don't get.</div>
+            <div class="tname">Founder</div>
+            <div class="tprice"><span class="amt">$11.99</span><span class="per">/month</span></div>
+            <div class="tdesc">The operational layer — the core tools to start running a real venture.</div>
             <div class="tfeat">
-              <div class="f"><span class="ck">✓</span> <b>Everything in Founder</b>, included</div>
-              <div class="grp">Run everything — unlimited</div>
-              <div class="f"><span class="ck">✓</span> <b>Unlimited</b> projects &amp; roadmaps — no venture cap</div>
-              <div class="f"><span class="ck">✓</span> <b>Full CRM</b> — unlimited contacts &amp; pipelines</div>
-              <div class="f"><span class="ck">✓</span> <b>Revenue Dashboard</b> — live Stripe data &amp; forecasting</div>
-              <div class="grp">Founder intelligence — Max only</div>
-              <div class="f"><span class="ck">✓</span> <b>Signal &amp; The Filter</b> — AI that surfaces your next move</div>
-              <div class="grp">Plus</div>
-              <div class="f"><span class="ck">✓</span> <b>Verified</b> founder profile</div>
-              <div class="f"><span class="ck">✓</span> Priority support — real humans, fast</div>
+              <div class="f"><span class="ck">—</span> <b>Everything in Free</b></div>
+              <div class="f"><span class="ck">—</span> <b>Project Tracker</b> — up to 3 ventures</div>
+              <div class="f"><span class="ck">—</span> <b>CRM</b> — manage leads &amp; clients</div>
+              <div class="f"><span class="ck">—</span> <b>Revenue Dashboard</b> — Stripe connected</div>
+              <div class="f"><span class="ck">—</span> Verified Echelon Score</div>
             </div>
-            <div class="tcta"><a class="btn btn-primary" href="#waitlist">Join the waitlist</a></div>
+            <div class="tcta"><a class="btn btn-primary" href="auth.html">Join the waitlist</a></div>
+            <div class="tnote">Founding member offer — first month free</div>
+          </article>
+
+          <!-- Founder Max -->
+          <article class="tier reveal">
+            <span class="tflag muted">Full power</span>
+            <div class="tname">Founder Max</div>
+            <div class="tprice"><span class="amt">$24.99</span><span class="per">/month</span></div>
+            <div class="tdesc">Run your entire venture on Echelon. Every tool, unlimited, plus founder intelligence.</div>
+            <div class="tfeat">
+              <div class="f"><span class="ck">—</span> <b>Everything in Founder</b></div>
+              <div class="f"><span class="ck">—</span> Unlimited projects &amp; roadmaps</div>
+              <div class="f"><span class="ck">—</span> Full CRM — unlimited contacts</div>
+              <div class="f"><span class="ck">—</span> Revenue Dashboard with forecasting</div>
+              <div class="f"><span class="ck">—</span> Verified founder profile</div>
+              <div class="f"><span class="ck">—</span> Priority support</div>
+            </div>
+            <div class="tcta"><a class="btn btn-ghost" href="auth.html">Join the waitlist</a></div>
             <div class="tnote">Every operational tool, unlocked</div>
           </article>
-
-          <article class="tier reveal">
-            <div class="tname">Enterprise</div>
-            <div class="tprice"><span class="amt">Custom</span></div>
-            <div class="tdesc">For accelerators, programs &amp; organisations backing founders at scale.</div>
-            <div class="tfeat">
-              <div class="f"><span class="ck">✓</span> Everything in <b>Founder Max</b>, for your whole cohort</div>
-              <div class="f"><span class="ck">✓</span> Centralised admin &amp; member management</div>
-              <div class="f"><span class="ck">✓</span> Cohort analytics &amp; reporting</div>
-              <div class="f"><span class="ck">✓</span> Custom branding &amp; private spaces</div>
-              <div class="f"><span class="ck">✓</span> Dedicated account manager</div>
-              <div class="f"><span class="ck">✓</span> Onboarding &amp; priority support</div>
-            </div>
-            <div class="tcta"><a class="btn btn-primary" href="#contact">Contact us</a></div>
-            <div class="tnote">Tailored to your organisation</div>
-          </article>
         </div>
+
+        <p class="r-contactline reveal">Running an accelerator or organisation backing founders? <a href="mailto:wmafrici.work@gmail.com">Contact us →</a></p>
       </div>
     </section>
 
-    <!-- CONTACT -->
-    <section class="contact" id="contact" data-screen-label="Contact">
-      <div class="wrap">
-        <div class="ledger reveal"><span class="lx">[ 05 ]</span><span class="lt">Contact</span><span class="lrule"></span><span class="lc">Enterprise &amp; partnerships</span></div>
-        <div class="contact-card reveal">
-          <div class="cleft">
-            <h2>Let's talk.</h2>
-            <p>Running an accelerator, program, or organisation backing founders? Reach out and we'll tailor Echelon to your cohort.</p>
-          </div>
-          <div class="contact-methods">
-            <a class="cmethod" href="/cdn-cgi/l/email-protection#fe89939f988c979d97d089918c95be99939f9792d09d9193">
-              <span class="cicon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
-              <span class="cinfo"><span class="clabel">Email</span><span class="cval"><span class="__cf_email__" data-cfemail="c9bea4a8afbba0aaa0e7bea6bba289aea4a8a0a5e7aaa6a4">[email&#160;protected]</span></span></span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FINAL CTA -->
-    <section class="cta-final" id="waitlist" data-screen-label="Waitlist">
-      <div class="wrap">
-        <div class="cta-card reveal">
-          <div class="cta-termbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tablabel">echelon — request access</span></div>
-          <div class="cta-inner">
-            <div>
-              <h2>Be first through the door.</h2>
-              <p class="sub">Echelon is coming soon. Join the waitlist — our founding cohort gets their first month free.</p>
-            </div>
-            <form class="waitlist" id="wlform" novalidate>
-              <div class="field">
-                <input type="email" id="wlemail" placeholder="you@yourstartup.com" aria-label="Email address" required />
-                <button type="submit" class="btn btn-primary">Request access</button>
-              </div>
-              <span class="micro">Coming soon · We'll never share your email.</span>
-            </form>
-          </div>
+    <!-- SECTION 4 — FINAL CTA -->
+    <section class="r-final" id="start" data-screen-label="Start">
+      <div class="wrapn">
+        <h2 class="reveal">Start building on Echelon.</h2>
+        <p class="reveal">Join the first platform built for young founders who are actually building.</p>
+        <div class="r-actions reveal">
+          <a class="btn btn-primary btn-pill" href="auth.html" style="padding: 14px 32px; font-weight: 600;">Create your account</a>
+          <div class="r-trust">Free to join · No card required · Always free to connect</div>
         </div>
       </div>
     </section>
@@ -1110,17 +717,15 @@
           <div class="foot-col">
             <span class="h">Platform</span>
             <a href="#platform">Co-founder matching</a>
-            <a href="#platform">Messaging</a>
             <a href="#platform">Project Tracker</a>
             <a href="#platform">Revenue Dashboard</a>
             <a href="#platform">CRM</a>
           </div>
           <div class="foot-col">
             <span class="h">Company</span>
-            <a href="#membership">Membership</a>
             <a href="#pricing">Pricing</a>
-            <a href="#contact">Contact</a>
-            <a href="#waitlist">Waitlist</a>
+            <a href="auth.html">Sign up</a>
+            <a href="mailto:wmafrici.work@gmail.com">Contact</a>
           </div>
           <div class="foot-col">
             <span class="h">Legal</span>
@@ -1139,7 +744,7 @@
 
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="echelon-config.js"></script>
+  <script src="echelon-config.js"></script>
   <script>
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1380,7 +985,7 @@
     }
 
     const form = document.getElementById('wlform');
-    form.addEventListener('submit', (ev) => {
+    if (form) form.addEventListener('submit', (ev) => {
       ev.preventDefault();
       const email = document.getElementById('wlemail').value.trim();
       const ok = /.+@.+\..+/.test(email);
